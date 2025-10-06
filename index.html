@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Statistica Brutale - Cybersigilism Edition</title>
+    <title>Statistica Brutale - Cybersigilism Minimal</title>
     <!-- Caricamento di Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -24,17 +24,12 @@
             --dark-border: #1f2937;
         }
 
-        /* Stili Brutalisti + Sigil Effect */
-        .brutal-border {
-            /* Il bordo ora usa il colore accentato per un look digitale */
-            border: 4px solid var(--neon-color); 
-            transition: all 0.15s ease-out;
-        }
-        .brutal-border:hover {
-            /* Effetto Cybersigilism: ombra chiara + leggero bagliore */
-            transform: translate(-3px, -3px);
+        /* Stili Brutalisti + Sigil Effect (Applicati solo a elementi specifici ora) */
+        .brutal-border-hover:hover {
+            /* Effetto Cybersigilism MINIMALE: ombra chiara + leggero bagliore */
+            transform: translate(-2px, -2px);
             /* Ombra e bagliore in bianco */
-            box-shadow: 3px 3px 0 var(--neon-color), 0 0 8px rgba(250, 250, 250, 0.3); 
+            box-shadow: 2px 2px 0 var(--neon-color), 0 0 4px rgba(250, 250, 250, 0.2); 
         }
         
         /* Stile specifico per il contenitore delle folder */
@@ -44,7 +39,7 @@
             align-items: center;
             padding: 1rem 0;
             /* Bordo di separazione più sottile in grigio scuro */
-            border-bottom: 2px solid #374151; 
+            border-bottom: 1px solid #374151; 
         }
         .folder-item:hover {
             /* Sfondo grigio/nero all'hover */
@@ -57,7 +52,7 @@
         }
         .cyber-glow-text {
              /* Leggero bagliore sul testo principale */
-            text-shadow: 0 0 5px rgba(250, 250, 250, 0.4);
+            text-shadow: 0 0 4px rgba(250, 250, 250, 0.3);
         }
         .text-neon {
             color: var(--neon-color);
@@ -68,7 +63,8 @@
 <body class="text-gray-200">
 
     <!-- Hero Section a Schermo Intero (h-screen) -->
-    <header id="hero" class="h-screen bg-black text-white flex flex-col justify-between p-6 md:p-12 brutal-border mb-8">
+    <!-- Rimosso brutal-border da qui per maggiore minimalismo -->
+    <header id="hero" class="h-screen bg-black text-white flex flex-col justify-between p-6 md:p-12 mb-8">
         <nav class="flex justify-start w-full">
             <!-- Spazio vuoto per mantenere la struttura -->
         </nav>
@@ -80,7 +76,7 @@
                 STATISTCS BLOG
             </h1>
             <!-- Sottotitolo CYBERSECURITY in Monospace -->
-            <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-none mb-8 uppercase text-gray-400 border-t-2 border-neon pt-2 cyber-mono">
+            <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-none mb-8 uppercase text-gray-400 border-t-2 border-neon pt-1.5 cyber-mono">
                 CYBERSECURITY
             </h2>
             <!-- Informazioni Personali - in Grigio e Monospace -->
@@ -98,9 +94,10 @@
     </header>
 
     <!-- Sezione Principale del Blog: INDICE ARTICOLI (FOLDER) -->
-    <main class="container mx-auto px-6 md:px-12 py-12 brutal-border bg-gray-900/50">
-        <!-- Titolo INDICE con Bordo Neon e Monospace -->
-        <h2 class="text-4xl font-extrabold uppercase mb-8 border-b-4 border-neon pb-2 text-neon cyber-glow-text cyber-mono">
+    <!-- Rimosso brutal-border dal main container e rimosso bg-gray-900/50 -->
+    <main class="container mx-auto px-6 md:px-12 py-12">
+        <!-- Titolo INDICE con Bordo Neon e Monospace, ridotto il border-b-4 a border-b-2 -->
+        <h2 class="text-4xl font-extrabold uppercase mb-8 border-b-2 border-neon pb-2 text-neon cyber-glow-text cyber-mono">
             INDICE
         </h2>
 
@@ -108,7 +105,8 @@
         <div class="space-y-0">
             
             <!-- Folder 1 -->
-            <a href="articolo_1.html" target="_blank" class="folder-item block brutal-border p-4 -m-4">
+            <!-- Applicato l'effetto hover minimale brutal-border-hover -->
+            <a href="articolo_1.html" target="_blank" class="folder-item block brutal-border-hover p-4 -m-4">
                 <div class="flex items-center">
                     <!-- Icona Folder (SVG Minimalista in Bianco Digitale) -->
                     <svg class="w-6 h-6 mr-4 text-neon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -126,13 +124,7 @@
         </div>
         
     </main>
-
-    <!-- Footer Brutalista -->
-    <footer class="bg-black mt-12 p-6 md:p-8 border-t-8 border-neon">
-        <div class="container mx-auto text-sm font-mono uppercase tracking-wider text-center text-gray-500">
-            [ FINE TRASMISSIONE DATI ]
-        </div>
-    </footer>
+    <!-- Il footer è stato rimosso -->
 
 </body>
 </html>

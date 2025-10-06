@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Articolo 1: Statistica e Cybersecurity - Cybersigilism</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Import e Stili di Base dall'Index */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900;200&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Sfondo ultra-scuro */
+            background-color: #0d0d0d; 
+            color: #e5e7eb; /* Testo grigio chiaro */
+        }
+        
+        /* Colore Neon Accento (BIANCO/GRIGIO DIGITALE per Cybersigilism) */
+        :root {
+            --neon-color: #FAFAFA; 
+            --dark-border: #1f2937;
+        }
+
+        /* Stili Brutalisti + Sigil Effect per i Box */
+        .brutal-border {
+            border: 4px solid var(--neon-color); 
+            transition: all 0.15s ease-out;
+        }
+        .brutal-border:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 3px 3px 0 var(--neon-color), 0 0 8px rgba(250, 250, 250, 0.3); 
+        }
+        
+        /* Glow e Monospace per elementi tecnici/importanti */
+        .cyber-mono {
+            font-family: monospace;
+        }
+        .cyber-glow-text {
+            text-shadow: 0 0 5px rgba(250, 250, 250, 0.4);
+        }
+        .text-neon {
+            color: var(--neon-color);
+        }
+        
+        /* Stile per le intestazioni di Sezione (H3) */
+        .section-header {
+            border-left: 8px solid var(--neon-color);
+            padding-left: 1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        /* Stile per i blocchi di Codice/Definizione */
+        .code-block-brutal {
+            background-color: #1f2937; /* Grigio scuro/nero per lo sfondo del codice */
+            border: 2px solid var(--neon-color);
+            padding: 1rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="text-gray-200">
+
+    <header class="bg-black p-6 border-b-4 border-neon">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-sm font-mono tracking-wider text-neon hover:text-gray-400 transition-colors">
+                ← /INDICE
+            </a>
+            <span class="text-sm font-mono tracking-wider text-gray-500">
+                //ARTICOLO_01
+            </span>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 md:px-12 py-12">
+        
+        <h1 class="text-5xl sm:text-6xl font-black uppercase mb-4 text-neon cyber-glow-text cyber-mono tracking-tight">
+            WHAT IS STATISTICS, AND WHY CAN IT BE USEFUL FOR CYBERSECURITY?
+        </h1>
+        
+        <p class="text-lg font-mono mb-10 text-gray-500 border-b-2 border-gray-700 pb-4">
+            Autore: CARLA ASSUNTA BRESCIA / MATRICOLA: 2011309 / 
+            <span class="text-neon">[ STATS_LEVEL: INITIATE ]</span>
+        </p>
+
+        <section class="mb-12 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold uppercase mb-4 text-neon">
+                [ ABSTRACT ]
+            </h2>
+            <p class="text-xl leading-relaxed text-gray-300">
+                <strong class="text-neon">In questo primo modulo</strong>, esploreremo la definizione fondamentale della statistica come disciplina per la raccolta, l'analisi, l'interpretazione e la presentazione dei dati. Successivamente, analizzeremo il suo ruolo cruciale nel campo della Cybersecurity, dove l'analisi quantitativa è essenziale per l'identificazione di anomalie, la previsione di attacchi e la valutazione dei rischi.
+            </p>
+        </section>
+
+        <section class="mb-12">
+            <h3 class="text-3xl font-extrabold uppercase section-header">
+                STATISTICA: LA DEFINIZIONE FORMALE
+            </h3>
+            <p class="mb-4 text-lg">
+                La statistica è la scienza che si occupa di studiare fenomeni collettivi attraverso la raccolta di dati, la loro analisi, l'interpretazione dei risultati e, infine, la formulazione di inferenze. Si divide tradizionalmente in due branche principali:
+            </p>
+            
+            <ul class="space-y-4 ml-6 list-disc list-outside">
+                <li class="text-lg">
+                    <strong class="text-neon">Statistica Descrittiva:</strong> Ha come scopo la <span class="cyber-mono">sintesi e la descrizione</span> delle caratteristiche salienti di un insieme di dati, spesso attraverso grafici e indici (media, deviazione standard, ecc.).
+                </li>
+                <li class="text-lg">
+                    <strong class="text-neon">Statistica Inferenziale:</strong> Utilizza i dati di un <span class="cyber-mono">campione</span> per trarre conclusioni più ampie (inferenze) su una intera <span class="cyber-mono">popolazione</span>, stimando parametri e verificando ipotesi.
+                </li>
+            </ul>
+
+            <div class="code-block-brutal text-sm text-gray-400">
+                <p class="text-neon font-bold">[ DATASET: BASE ]</p>
+                <code class="cyber-mono">
+                    STAT_DESCRITTIVA.APPLICA(SINTESI_DATI)
+                    <br>
+                    STAT_INFERENZIALE.APPLICA(IPOTESI_TESTING)
+                </code>
+            </div>
+        </section>
+        
+        ---
+
+        <section class="mb-12">
+            <h3 class="text-3xl font-extrabold uppercase section-header">
+                IL RUOLO STRATEGICO NELLA CYBERSECURITY
+            </h3>
+            <p class="mb-6 text-lg">
+                Nel mondo digitale, la statistica non è solo un esercizio accademico, ma uno strumento <strong class="text-neon">operativo critico</strong>. I sistemi di sicurezza generano enormi quantità di dati (log, traffico di rete, eventi utente). La statistica permette di trasformare questo <span class="cyber-mono">rumore di fondo</span> in <strong class="text-neon">informazioni utilizzabili</strong> per la difesa.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <div class="p-4 bg-gray-800 brutal-border hover:bg-gray-700/70">
+                    <h4 class="text-xl font-bold uppercase mb-2 text-neon cyber-mono">ANOMALY DETECTION</h4>
+                    <p class="text-base text-gray-300">
+                        Si usa la Statistica Descrittiva per definire il <strong class="text-neon">comportamento normale</strong> (baseline) del sistema e la Deviazione Standard per identificare gli eventi che si discostano significativamente da tale norma (es. un picco inusuale di accessi falliti).
+                    </p>
+                </div>
+
+                <div class="p-4 bg-gray-800 brutal-border hover:bg-gray-700/70">
+                    <h4 class="text-xl font-bold uppercase mb-2 text-neon cyber-mono">RISK ASSESSMENT</h4>
+                    <p class="text-base text-gray-300">
+                        La Statistica Inferenziale aiuta a <strong class="text-neon">stimare la probabilità</strong> di un evento avverso (P) e il suo impatto (I), permettendo di calcolare un indice di rischio (R = P * I) per dare priorità agli interventi.
+                    </p>
+                </div>
+                
+                <div class="p-4 bg-gray-800 brutal-border hover:bg-gray-700/70">
+                    <h4 class="text-xl font-bold uppercase mb-2 text-neon cyber-mono">TRAFFIC ANALYSIS</h4>
+                    <p class="text-base text-gray-300">
+                        L'analisi delle serie storiche dei dati di traffico di rete permette di riconoscere pattern di attacchi DDoS o scansioni di porte. Vengono usati algoritmi che si basano sulla <strong class="text-neon">regolarità temporale</strong> dei dati.
+                    </p>
+                </div>
+                
+            </div>
+        </section>
+        
+        ---
+
+        <section class="mb-12">
+            <h3 class="text-3xl font-extrabold uppercase section-header">
+                CONCLUSIONE E FOCUS FUTURI
+            </h3>
+            <p class="mb-4 text-lg">
+                In sintesi, la statistica è la <strong class="text-neon">spina dorsale analitica</strong> della moderna Cybersecurity. Non si tratta solo di contare gli attacchi, ma di <span class="cyber-mono">capire le dinamiche sottostanti</span> e prevedere le minacce future.
+            </p>
+            
+            <p class="mb-4 text-lg">
+                <span class="text-neon font-bold">Prossimi passi:</span> Nel prossimo articolo, ci concentreremo su un concetto statistico fondamentale per l'analisi dei log: la <strong class="text-neon">Distribuzione di Frequenza</strong>.
+            </p>
+            
+            <div class="p-4 bg-gray-900/70 border-t-4 border-neon mt-8">
+                <p class="text-center font-mono text-sm text-gray-500">
+                    [ END OF LINE / PROCESSO TERMINATO ]
+                </p>
+            </div>
+            
+        </section>
+
+    </main>
+
+    <footer class="bg-black mt-12 p-6 md:p-8 border-t-8 border-neon">
+        <div class="container mx-auto text-sm font-mono uppercase tracking-wider text-center text-gray-500">
+            [ STATISTCS BLOG // CYBERSECURITY ]
+        </div>
+    </footer>
+
+</body>
+</html>
