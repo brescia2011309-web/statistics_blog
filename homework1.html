@@ -82,103 +82,25 @@
         </h1>
         
         <p class="text-lg font-mono mb-10 text-gray-500 border-b-2 border-gray-700 pb-4">
-            Autore: CARLA ASSUNTA BRESCIA / MATRICOLA: 2011309 / 
-            <span class="text-neon">[ STATS_LEVEL: INITIATE ]</span>
+            Autore: CARLA ASSUNTA BRESCIA / MATRICOLA: 2011309
+            <!-- STATS_LEVEL rimosso come richiesto -->
         </p>
 
+        <!-- L'Abstract e tutte le sezioni di paragrafo precedenti sono state rimosse -->
+
         <section class="mb-12 p-6 bg-gray-900/50 brutal-border">
-            <h2 class="text-2xl font-bold uppercase mb-4 text-neon">
-                [ ABSTRACT ]
-            </h2>
-            <p class="text-xl leading-relaxed text-gray-300">
-                <strong class="text-neon">In questo primo modulo</strong>, esploreremo la definizione fondamentale della statistica come disciplina per la raccolta, l'analisi, l'interpretazione e la presentazione dei dati. Successivamente, analizzeremo il suo ruolo cruciale nel campo della Cybersecurity, dove l'analisi quantitativa è essenziale per l'identificazione di anomalie, la previsione di attacchi e la valutazione dei rischi.
+             <!-- Il titolo "Statistica e Fondamenti di Cyber Difesa" è stato rimosso come richiesto -->
+            <p class="text-lg leading-relaxed text-gray-300">
+                Statistics is a branch of mathematics, the science of collecting, analyzing, interpreting, and presenting data. In cybersecurity, it's especially useful to analyze large volumes of cyber data, identify patterns, predict threats, detect anomalies, and measure the effectiveness of security measures to proactively protect systems and data from attacks. In the field of cybersecurity, statistics plays a fundamental role because it allows large amounts of raw data from networks, systems, and users to be transformed into useful knowledge for identifying and preventing cyber threats. Through statistical analysis, it is possible to recognize normal behavior patterns and detect anomalies, such as unusual network traffic or an abnormal number of login attempts, which may indicate an ongoing attack. Statistics also makes it possible to estimate the likelihood of certain events, contributing to risk assessment and the planning of appropriate security measures. Furthermore, artificial intelligence and machine learning techniques, which are increasingly used in cybersecurity, are based on statistical principles that enable them to learn from past data and improve their ability to detect new threats. In summary, statistics provides the essential tools to understand and effectively manage the complexity of digital data, making it an indispensable resource for protecting information and computer systems.
             </p>
         </section>
 
-        <section class="mb-12">
-            <h3 class="text-3xl font-extrabold uppercase section-header">
-                STATISTICA: LA DEFINIZIONE FORMALE
-            </h3>
-            <p class="mb-4 text-lg">
-                La statistica è la scienza che si occupa di studiare fenomeni collettivi attraverso la raccolta di dati, la loro analisi, l'interpretazione dei risultati e, infine, la formulazione di inferenze. Si divide tradizionalmente in due branche principali:
+        <!-- Blocco finale mantenuto per chiudere l'articolo -->
+        <div class="p-4 bg-gray-900/70 border-t-4 border-neon mt-8">
+            <p class="text-center font-mono text-sm text-gray-500">
+                [ END OF LINE / PROCESSO TERMINATO ]
             </p>
-            
-            <ul class="space-y-4 ml-6 list-disc list-outside">
-                <li class="text-lg">
-                    <strong class="text-neon">Statistica Descrittiva:</strong> Ha come scopo la <span class="cyber-mono">sintesi e la descrizione</span> delle caratteristiche salienti di un insieme di dati, spesso attraverso grafici e indici (media, deviazione standard, ecc.).
-                </li>
-                <li class="text-lg">
-                    <strong class="text-neon">Statistica Inferenziale:</strong> Utilizza i dati di un <span class="cyber-mono">campione</span> per trarre conclusioni più ampie (inferenze) su una intera <span class="cyber-mono">popolazione</span>, stimando parametri e verificando ipotesi.
-                </li>
-            </ul>
-
-            <div class="code-block-brutal text-sm text-gray-400">
-                <p class="text-neon font-bold">[ DATASET: BASE ]</p>
-                <code class="cyber-mono">
-                    STAT_DESCRITTIVA.APPLICA(SINTESI_DATI)
-                    <br>
-                    STAT_INFERENZIALE.APPLICA(IPOTESI_TESTING)
-                </code>
-            </div>
-        </section>
-        
-        ---
-
-        <section class="mb-12">
-            <h3 class="text-3xl font-extrabold uppercase section-header">
-                IL RUOLO STRATEGICO NELLA CYBERSECURITY
-            </h3>
-            <p class="mb-6 text-lg">
-                Nel mondo digitale, la statistica non è solo un esercizio accademico, ma uno strumento <strong class="text-neon">operativo critico</strong>. I sistemi di sicurezza generano enormi quantità di dati (log, traffico di rete, eventi utente). La statistica permette di trasformare questo <span class="cyber-mono">rumore di fondo</span> in <strong class="text-neon">informazioni utilizzabili</strong> per la difesa.
-            </p>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                
-                <div class="p-4 bg-gray-800 brutal-border hover:bg-gray-700/70">
-                    <h4 class="text-xl font-bold uppercase mb-2 text-neon cyber-mono">ANOMALY DETECTION</h4>
-                    <p class="text-base text-gray-300">
-                        Si usa la Statistica Descrittiva per definire il <strong class="text-neon">comportamento normale</strong> (baseline) del sistema e la Deviazione Standard per identificare gli eventi che si discostano significativamente da tale norma (es. un picco inusuale di accessi falliti).
-                    </p>
-                </div>
-
-                <div class="p-4 bg-gray-800 brutal-border hover:bg-gray-700/70">
-                    <h4 class="text-xl font-bold uppercase mb-2 text-neon cyber-mono">RISK ASSESSMENT</h4>
-                    <p class="text-base text-gray-300">
-                        La Statistica Inferenziale aiuta a <strong class="text-neon">stimare la probabilità</strong> di un evento avverso (P) e il suo impatto (I), permettendo di calcolare un indice di rischio (R = P * I) per dare priorità agli interventi.
-                    </p>
-                </div>
-                
-                <div class="p-4 bg-gray-800 brutal-border hover:bg-gray-700/70">
-                    <h4 class="text-xl font-bold uppercase mb-2 text-neon cyber-mono">TRAFFIC ANALYSIS</h4>
-                    <p class="text-base text-gray-300">
-                        L'analisi delle serie storiche dei dati di traffico di rete permette di riconoscere pattern di attacchi DDoS o scansioni di porte. Vengono usati algoritmi che si basano sulla <strong class="text-neon">regolarità temporale</strong> dei dati.
-                    </p>
-                </div>
-                
-            </div>
-        </section>
-        
-        ---
-
-        <section class="mb-12">
-            <h3 class="text-3xl font-extrabold uppercase section-header">
-                CONCLUSIONE E FOCUS FUTURI
-            </h3>
-            <p class="mb-4 text-lg">
-                In sintesi, la statistica è la <strong class="text-neon">spina dorsale analitica</strong> della moderna Cybersecurity. Non si tratta solo di contare gli attacchi, ma di <span class="cyber-mono">capire le dinamiche sottostanti</span> e prevedere le minacce future.
-            </p>
-            
-            <p class="mb-4 text-lg">
-                <span class="text-neon font-bold">Prossimi passi:</span> Nel prossimo articolo, ci concentreremo su un concetto statistico fondamentale per l'analisi dei log: la <strong class="text-neon">Distribuzione di Frequenza</strong>.
-            </p>
-            
-            <div class="p-4 bg-gray-900/70 border-t-4 border-neon mt-8">
-                <p class="text-center font-mono text-sm text-gray-500">
-                    [ END OF LINE / PROCESSO TERMINATO ]
-                </p>
-            </div>
-            
-        </section>
+        </div>
 
     </main>
 
