@@ -268,72 +268,6 @@ Hair_Color (e.g., 'Blonde', 'Dark', 'Red')</pre>
                 <!-- DISTRIBUTION 2: Hair_Color (Categorical) - ONLY ABSOLUTE FREQUENCIES -->
                 <h4 class="text-xl font-bold subsection-header mb-4 mt-6">2. Distribution: Hair Color (Hair_Color)</h4>
 
-
-                        <!-- Caesar (+3) shifted letter frequency (do not display encrypted text) -->
-                        <section class="mb-12 mt-12">
-                            <h3 class="text-3xl font-bold uppercase text-neon section-header cyber-mono">
-                                Caesar cipher (+3) letter frequency (derived)
-                            </h3>
-
-                            <div class="p-6 bg-gray-900/50 brutal-border">
-                                <p class="text-base leading-relaxed text-gray-400 mb-4">
-                                    This section computes the letter-frequency distribution after applying a classical Caesar cipher with shift +3 to the same passage. The encrypted text is not shown; only the resulting letter counts and a compact bar chart are rendered.
-                                </p>
-
-                                <div id="caesar-frequency" class="text-sm">
-                                    <div id="cf-chart" class="mb-4"></div>
-                                    <div id="cf-table" class="overflow-x-auto"></div>
-                                </div>
-
-                                <script>
-                                    (function(){
-                                        // Reuse the hidden passage element
-                                        const raw = document.getElementById('passage').textContent || '';
-                                        const normalized = raw.normalize('NFKD').replace(/\p{Diacritic}/gu, '');
-                                        const lettersOnly = normalized.toLowerCase().replace(/[^a-z]/g, '');
-
-                                        // Caesar shift +3: a->d, b->e, ..., x->a, y->b, z->c
-                                        function shiftChar(ch){
-                                            const code = ch.charCodeAt(0) - 97; // 0..25
-                                            const shifted = (code + 3) % 26;
-                                            return String.fromCharCode(shifted + 97);
-                                        }
-
-                                        const counts = {};
-                                        for (const ch of lettersOnly){
-                                            const s = shiftChar(ch);
-                                            counts[s] = (counts[s] || 0) + 1;
-                                        }
-
-                                        const letters = Object.keys(counts).sort();
-                                        const max = Math.max(...Object.values(counts), 1);
-
-                                        const chart = document.getElementById('cf-chart');
-                                        const table = document.getElementById('cf-table');
-
-                                        for (const l of letters){
-                                            const c = counts[l];
-                                            const pct = Math.round((c / max) * 100);
-                                            const row = document.createElement('div');
-                                            row.className = 'lf-row';
-                                            row.innerHTML = `<div class="lf-label">${l}</div>`+
-                                                            `<div class="lf-bar"><div class="lf-fill" style="width:${pct}%">${c}</div></div>`+
-                                                            `<div class="lf-count">${c}</div>`;
-                                            chart.appendChild(row);
-                                        }
-
-                                        // Table
-                                        const tbl = document.createElement('table');
-                                        tbl.className = 'w-full text-sm text-left border-collapse mt-4';
-                                        let html = '<thead class="text-xs uppercase bg-gray-800 border-b-2 border-neon"><tr><th class="px-3 py-2">Letter</th><th class="px-3 py-2">Count</th></tr></thead><tbody>';
-                                        for (const l of letters){ html += `<tr class="bg-gray-900 border-b border-gray-700"><td class="px-3 py-2">${l}</td><td class="px-3 py-2">${counts[l]}</td></tr>` }
-                                        html += '</tbody>';
-                                        tbl.innerHTML = html;
-                                        table.appendChild(tbl);
-                                    })();
-                                </script>
-                            </div>
-                        </section>
                 <div class="overflow-x-auto mb-6">
                     <table class="w-full text-sm text-left border-collapse border border-neon">
                         <thead class="text-xs uppercase bg-gray-800 border-b-2 border-neon">
@@ -412,7 +346,6 @@ GROUP BY
 
                 <div id="letter-frequency" class="text-sm">
                     <div id="lf-chart" class="mb-4"></div>
-                    <div id="lf-table" class="overflow-x-auto"></div>
                 </div>
 
                 <style>
@@ -533,35 +466,81 @@ mucchio di progetti in testa.
                         const max = Math.max(...Object.values(counts), 1);
 
                         const chart = document.getElementById('lf-chart');
-                        const table = document.getElementById('lf-table');
 
-                        // Render simple bar rows
+                        // Render simple bar rows (no numeric counts displayed)
                         for (const l of letters){
                             const c = counts[l];
                             const pct = Math.round((c / max) * 100);
                             const row = document.createElement('div');
                             row.className = 'lf-row';
                             row.innerHTML = `<div class="lf-label">${l}</div>`+
-                                            `<div class="lf-bar"><div class="lf-fill" style="width:${pct}%">${c}</div></div>`+
-                                            `<div class="lf-count">${c}</div>`;
+                                            `<div class="lf-bar"><div class="lf-fill" style="width:${pct}%">${c}</div></div>`;
                             chart.appendChild(row);
                         }
-
-                        // Render small counts table (two columns)
-                        const tbl = document.createElement('table');
-                        tbl.className = 'w-full text-sm text-left border-collapse mt-4';
-                        let html = '<thead class="text-xs uppercase bg-gray-800 border-b-2 border-neon"><tr><th class="px-3 py-2">Letter</th><th class="px-3 py-2">Count</th></tr></thead><tbody>';
-                        for (const l of letters){ html += `<tr class="bg-gray-900 border-b border-gray-700"><td class="px-3 py-2">${l}</td><td class="px-3 py-2">${counts[l]}</td></tr>` }
-                        html += '</tbody>';
-                        tbl.innerHTML = html;
-                        table.appendChild(tbl);
                     })();
                 </script>
             </div>
         </section>
 
+        <!-- Caesar (+3) shifted letter frequency (derived) -->
+        <section class="mb-12 mt-6">
+            <h3 class="text-2xl font-bold uppercase text-neon section-header cyber-mono">
+                Caesar (+3) shifted distribution
+            </h3>
+
+            <div class="p-6 bg-gray-900/50 brutal-border">
+                <p class="text-base leading-relaxed text-gray-400 mb-4">
+                    Distribution computed after applying a Caesar cipher with shift +3 to the same normalized passage. Encrypted text is not displayed — only the letter counts and chart.
+                </p>
+
+                <div id="caesar-frequency" class="text-sm">
+                    <div id="cf-chart" class="mb-4"></div>
+                </div>
+
+                <script>
+                    (function(){
+                        // Read the hidden passage (already present above)
+                        const raw = document.getElementById('passage').textContent || '';
+                        const normalized = raw.normalize('NFKD').replace(/\p{Diacritic}/gu, '');
+                        const lettersOnly = normalized.toLowerCase().replace(/[^a-z]/g, '');
+
+                        function shiftChar(ch){
+                            const code = ch.charCodeAt(0) - 97;
+                            return String.fromCharCode(((code + 3) % 26) + 97);
+                        }
+
+                        const counts = {};
+                        for (const ch of lettersOnly){
+                            const s = shiftChar(ch);
+                            counts[s] = (counts[s] || 0) + 1;
+                        }
+
+                        const letters = Object.keys(counts).sort();
+                        const max = Math.max(...Object.values(counts), 1);
+
+                        const chart = document.getElementById('cf-chart');
+                            for (const l of letters){
+                                const c = counts[l];
+                                const pct = Math.round((c / max) * 100);
+                                const row = document.createElement('div');
+                                row.className = 'lf-row';
+                                row.innerHTML = `<div class="lf-label">${l}</div>`+
+                                                `<div class="lf-bar"><div class="lf-fill" style="width:${pct}%">${c}</div></div>`;
+                            chart.appendChild(row);
+                        }
+
+                        // no numeric counts table for Caesar distribution (graph only)
+                    })();
+                </script>
+            </div>
+        </section>
 
         <!-- Finl block to close the article -->
+        <div class="p-6 mt-6 bg-gray-900/40 border-t border-gray-800">
+            <p class="text-base leading-relaxed text-gray-400">
+                Final note — how the shift is deduced: by comparing the two letter-frequency distributions you can infer the Caesar shift because a Caesar cipher simply relabels letters. In practice, identify the most frequent letters in the original text (for Italian typically <strong>"a, e, i, o, n, r"</strong> are common) and match them to the most frequent letters in the shifted distribution. The mapping between the top letters gives a candidate shift (for example if original <code>a</code> maps to <code>d</code>, the shift is +3). To be robust, compute the shift that minimizes a goodness-of-fit metric (chi-squared) between the shifted candidate distribution and expected Italian frequencies, or test the top few candidate shifts by applying them and checking the percentage of valid Italian words. This combination of frequency alignment and small validation on real words reliably reveals the unknown Caesar shift.
+            </p>
+        </div>
         <div class="p-4 bg-gray-900/70 border-t-4 border-neon mt-8">
             <p class="text-center font-mono text-sm text-gray-500">
                 [ END OF LINE / PROCESS TERMINATED ]
