@@ -268,6 +268,72 @@ Hair_Color (e.g., 'Blonde', 'Dark', 'Red')</pre>
                 <!-- DISTRIBUTION 2: Hair_Color (Categorical) - ONLY ABSOLUTE FREQUENCIES -->
                 <h4 class="text-xl font-bold subsection-header mb-4 mt-6">2. Distribution: Hair Color (Hair_Color)</h4>
 
+
+                        <!-- Caesar (+3) shifted letter frequency (do not display encrypted text) -->
+                        <section class="mb-12 mt-12">
+                            <h3 class="text-3xl font-bold uppercase text-neon section-header cyber-mono">
+                                Caesar cipher (+3) letter frequency (derived)
+                            </h3>
+
+                            <div class="p-6 bg-gray-900/50 brutal-border">
+                                <p class="text-base leading-relaxed text-gray-400 mb-4">
+                                    This section computes the letter-frequency distribution after applying a classical Caesar cipher with shift +3 to the same passage. The encrypted text is not shown; only the resulting letter counts and a compact bar chart are rendered.
+                                </p>
+
+                                <div id="caesar-frequency" class="text-sm">
+                                    <div id="cf-chart" class="mb-4"></div>
+                                    <div id="cf-table" class="overflow-x-auto"></div>
+                                </div>
+
+                                <script>
+                                    (function(){
+                                        // Reuse the hidden passage element
+                                        const raw = document.getElementById('passage').textContent || '';
+                                        const normalized = raw.normalize('NFKD').replace(/\p{Diacritic}/gu, '');
+                                        const lettersOnly = normalized.toLowerCase().replace(/[^a-z]/g, '');
+
+                                        // Caesar shift +3: a->d, b->e, ..., x->a, y->b, z->c
+                                        function shiftChar(ch){
+                                            const code = ch.charCodeAt(0) - 97; // 0..25
+                                            const shifted = (code + 3) % 26;
+                                            return String.fromCharCode(shifted + 97);
+                                        }
+
+                                        const counts = {};
+                                        for (const ch of lettersOnly){
+                                            const s = shiftChar(ch);
+                                            counts[s] = (counts[s] || 0) + 1;
+                                        }
+
+                                        const letters = Object.keys(counts).sort();
+                                        const max = Math.max(...Object.values(counts), 1);
+
+                                        const chart = document.getElementById('cf-chart');
+                                        const table = document.getElementById('cf-table');
+
+                                        for (const l of letters){
+                                            const c = counts[l];
+                                            const pct = Math.round((c / max) * 100);
+                                            const row = document.createElement('div');
+                                            row.className = 'lf-row';
+                                            row.innerHTML = `<div class="lf-label">${l}</div>`+
+                                                            `<div class="lf-bar"><div class="lf-fill" style="width:${pct}%">${c}</div></div>`+
+                                                            `<div class="lf-count">${c}</div>`;
+                                            chart.appendChild(row);
+                                        }
+
+                                        // Table
+                                        const tbl = document.createElement('table');
+                                        tbl.className = 'w-full text-sm text-left border-collapse mt-4';
+                                        let html = '<thead class="text-xs uppercase bg-gray-800 border-b-2 border-neon"><tr><th class="px-3 py-2">Letter</th><th class="px-3 py-2">Count</th></tr></thead><tbody>';
+                                        for (const l of letters){ html += `<tr class="bg-gray-900 border-b border-gray-700"><td class="px-3 py-2">${l}</td><td class="px-3 py-2">${counts[l]}</td></tr>` }
+                                        html += '</tbody>';
+                                        tbl.innerHTML = html;
+                                        table.appendChild(tbl);
+                                    })();
+                                </script>
+                            </div>
+                        </section>
                 <div class="overflow-x-auto mb-6">
                     <table class="w-full text-sm text-left border-collapse border border-neon">
                         <thead class="text-xs uppercase bg-gray-800 border-b-2 border-neon">
