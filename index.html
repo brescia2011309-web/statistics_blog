@@ -40,6 +40,7 @@
             padding: 1rem 0;
             /* Bordo di separazione più sottile in grigio scuro */
             border-bottom: 1px solid #374151; 
+            transition: background-color 0.2s, box-shadow 0.2s, transform 0.2s;
         }
         .folder-item:hover {
             /* Sfondo grigio/nero all'hover */
@@ -63,7 +64,6 @@
 <body class="text-gray-200">
 
     <!-- Hero Section a Schermo Intero (h-screen) -->
-    <!-- Rimosso brutal-border da qui per maggiore minimalismo -->
     <header id="hero" class="h-screen bg-black text-white flex flex-col justify-between p-6 md:p-12 mb-8">
         <nav class="flex justify-start w-full">
             <!-- Spazio vuoto per mantenere la struttura -->
@@ -94,7 +94,6 @@
     </header>
 
     <!-- Sezione Principale del Blog: INDICE ARTICOLI (FOLDER) -->
-    <!-- Rimosso brutal-border dal main container e rimosso bg-gray-900/50 -->
     <main class="container mx-auto px-6 md:px-12 py-12">
         <!-- Titolo INDICE con Bordo Neon e Monospace, ridotto il border-b-4 a border-b-2 -->
         <h2 class="text-4xl font-extrabold uppercase mb-8 border-b-2 border-neon pb-2 text-neon cyber-glow-text cyber-mono">
@@ -104,9 +103,8 @@
         <!-- Lista di Folder/Articoli -->
         <div class="space-y-0">
             
-            <!-- Folder 1 -->
-            <!-- Applicato l'effetto hover minimale brutal-border-hover -->
-            <a href="homework1.html" target="_blank" class="folder-item block brutal-border-hover p-4 -m-4">
+            <!-- Folder 1: Rinominate in homework_1 -->
+            <a href="homework_1.html" target="_blank" class="folder-item block brutal-border-hover p-4 -m-4">
                 <div class="flex items-center">
                     <!-- Icona Folder (SVG Minimalista in Bianco Digitale) -->
                     <svg class="w-6 h-6 mr-4 text-neon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -114,17 +112,31 @@
                     </svg>
                     <!-- Titolo della Folder -->
                     <span class="text-xl md:text-2xl font-bold tracking-tight text-gray-200">
-                        What is statistics, and why can it be useful for cybersecurity?
+                        homework_1
                     </span>
                 </div>
                 <!-- Testo APRI in Monospace Digitale -->
                 <span class="text-sm font-mono text-neon cyber-mono">APRI →</span>
             </a>
             
+            <!-- Folder 2: Nuova cartella homework_2 -->
+            <a href="homework_2.html" target="_blank" class="folder-item block brutal-border-hover p-4 -m-4">
+                <div class="flex items-center">
+                    <!-- Icona Folder (SVG Minimalista in Bianco Digitale) -->
+                    <svg class="w-6 h-6 mr-4 text-neon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+                    </svg>
+                    <!-- Titolo della Folder -->
+                    <span class="text-xl md:text-2xl font-bold tracking-tight text-gray-200">
+                        homework_2
+                    </span>
+                </div>
+                <!-- Testo APRI in Monospace Digitale -->
+                <span class="text-sm font-mono text-neon cyber-mono">APRI →</span>
+            </a>
+
         </div>
         
     </main>
-    <!-- Il footer è stato rimosso -->
-
 </body>
 </html>
