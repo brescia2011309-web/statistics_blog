@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework 2: Dataset and Distribution - Demographic Characteristics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Import and Basic Styles from Index */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900;200;300&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Ultra-dark background */
+            background-color: #0d0d0d; 
+            color: #e5e7eb; /* Light gray text */
+        }
+        
+        /* Neon Accent Color (WHITE/DIGITAL GRAY for Cybersigilism) */
+        :root {
+            --neon-color: #FAFAFA; 
+            --dark-border: #1f2937;
+        }
+
+        /* Brutalist Styles + Sigil Effect for Boxes */
+        .brutal-border {
+            border: 4px solid var(--neon-color); 
+            transition: all 0.15s ease-out;
+        }
+        .brutal-border:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 3px 3px 0 var(--neon-color), 0 0 8px rgba(250, 250, 250, 0.3); 
+        }
+        
+        /* Glow and Monospace for technical/important elements */
+        .cyber-mono {
+            font-family: monospace;
+        }
+        .cyber-glow-text {
+            text-shadow: 0 0 5px rgba(250, 250, 250, 0.4);
+        }
+        .text-neon {
+            color: var(--neon-color);
+        }
+        
+        /* Style for Section Headers (H3) */
+        .section-header {
+            border-left: 8px solid var(--neon-color);
+            padding-left: 1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        /* Style for Sub-Section Headers (H4) */
+        .subsection-header {
+            color: var(--neon-color);
+            border-bottom: 2px solid #374151; /* Thin line for separation */
+            padding-bottom: 4px;
+            margin-bottom: 1rem;
+        }
+
+        /* Style for Code/Definition Blocks */
+        .code-block-brutal {
+            background-color: #1f2937; /* Dark gray/black for code background */
+            border: 2px solid var(--neon-color);
+            padding: 1rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="text-gray-200">
+
+    <header class="bg-black p-6 border-b-4 border-neon">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-sm font-mono tracking-wider text-neon hover:text-gray-400 transition-colors">
+                ← /INDEX
+            </a>
+            <span class="text-sm font-mono tracking-wider text-gray-500">
+                //ARTICLE_02
+            </span>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 md:px-12 py-12">
+        
+        <h1 class="text-5xl sm:text-6xl font-black uppercase mb-4 text-neon cyber-glow-text cyber-mono tracking-tight">
+            HOMEWORK_2
+        </h1>
+        
+        <p class="text-lg font-mono mb-10 text-gray-500 border-b-2 border-gray-700 pb-4">
+            Author: CARLA ASSUNTA BRESCIA / MATRICULA: 2011309
+        </p>
+
+        <!-- FIRST QUESTION: Dataset and Distribution -->
+        <section class="mb-12">
+            <h3 class="text-3xl font-bold uppercase text-neon section-header cyber-mono">
+                Explain the concept of dataset and distribution
+            </h3>
+            
+            <div class="p-6 bg-gray-900/50 brutal-border">
+                
+                <!-- DATASET SECTION -->
+                <p class="text-xl font-bold text-neon mb-4 border-b border-gray-700 pb-1">DATASET</p>
+                
+                <p class="text-lg leading-relaxed text-gray-300 mb-4">
+                    A <i>dataset</i> is a structured collection of observations, usually organized in rows (cases) and columns (variables).
+                </p>
+
+                <p class="text-lg leading-relaxed text-gray-300 mb-4">
+                    For example, a dataset might record characteristics of individuals, focusing on categorical variables:
+                </p>
+
+                <div class="code-block-brutal text-sm">
+                    <pre class="cyber-mono text-neon">
+Person_ID
+Eye_Color (e.g., 'Blue', 'Brown', 'Green')
+Hair_Color (e.g., 'Blonde', 'Dark', 'Red')</pre>
+                </div>
+                
+                <p class="text-lg leading-relaxed text-gray-300 mb-4">
+                    Each row is one observation; together they form the <b>dataset</b>.
+                </p>
+
+                <!-- DISTRIBUTION SECTION -->
+                <p class="text-xl font-bold text-neon mt-6 mb-4 border-b border-gray-700 pb-1">DISTRIBUTION</p>
+
+                <p class="text-lg leading-relaxed text-gray-300 mb-4">
+                    A <b>distribution</b>, on the other hand, describes how the values of a variable are spread across possible outcomes.
+                </p>
+                
+                <p class="text-lg leading-relaxed text-gray-300 mb-4">
+                    For categorical data, the distribution is defined by the count of individuals within each possible category (e.g., 'Blue' eyes vs 'Brown' eyes).
+                </p>
+
+
+                <p class="text-lg leading-relaxed text-gray-300 mt-4 font-bold">
+                    The key distinction is simple:
+                </p>
+                <p class="text-lg leading-relaxed text-gray-300 mb-8">
+                    The <i>dataset</i> provides the <b>initial observations</b> that you've collected. The <i>distribution</i> reveals the underlying pattern of variability within that data, allowing you to understand how your observations truly behave.
+                </p>
+
+                <!-- INTRODUCTION PARAGRAPH TO THE TABLE (SUMMARY) -->
+                <h4 class="text-xl font-bold subsection-header mb-4 mt-6">Visual Example (Collected Data)</h4>
+                <p class="text-base leading-relaxed text-gray-400 mb-6">
+                    The following table shows the <b>collected data</b>. The distribution is determined by counting repeated entries in the categorical columns.
+                </p>
+                
+                <!-- Table illustrating the Dataset (COLLECTED DATA) -->
+                <div class="overflow-x-auto mb-6">
+                    <table class="w-full text-sm text-left border-collapse border border-neon">
+                        <thead class="text-xs uppercase bg-gray-800 border-b-2 border-neon">
+                            <tr>
+                                <th scope="col" class="px-3 py-2 border-r border-neon">Person_ID</th>
+                                <th scope="col" class="px-3 py-2 border-r border-neon">Eye_Color</th>
+                                <th scope="col" class="px-3 py-2">Hair_Color</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Person 1 -->
+                            <tr class="bg-gray-900 border-b border-gray-700">
+                                <td class="px-3 py-2 border-r border-neon cyber-mono">P001</td>
+                                <td class="px-3 py-2 border-r border-neon cyber-mono">Brown</td>
+                                <td class="px-3 py-2 cyber-mono">Dark</td>
+                            </tr>
+                            <!-- Person 2 -->
+                            <tr class="bg-gray-900 border-b border-gray-700">
+                                <td class="px-3 py-2 border-r border-neon cyber-mono">P002</td>
+                                <td class="px-3 py-2 border-r border-neon cyber-mono">Blue</td>
+                                <td class="px-3 py-2 cyber-mono">Blonde</td>
+                            </tr>
+                              <!-- Person 3 -->
+                            <tr class="bg-gray-900 border-b border-gray-700">
+                                <td class="px-3 py-2 border-r border-neon cyber-mono">P003</td>
+                                <td class="px-3 py-2 border-r border-neon cyber-mono">Brown</td>
+                                <td class="px-3 py-2 cyber-mono">Dark</td>
+                            </tr>
+                            <!-- Person 4 -->
+                            <tr class="bg-gray-900 border-b border-gray-700">
+                                <td class="px-3 py-2 border-r border-neon cyber-mono">P004</td>
+                                <td class="px-3 py-2 border-r border-neon cyber-mono">Green</td>
+                                <td class="px-3 py-2 cyber-mono">Red</td>
+                            </tr>
+                            <!-- Person 5 -->
+                            <tr class="bg-gray-900 border-b border-gray-700">
+                                <td class="px-3 py-2 border-r border-neon cyber-mono">P005</td>
+                                <td class="px-3 py-2 border-r border-neon cyber-mono">Brown</td>
+                                <td class="px-3 py-2 cyber-mono">Dark</td>
+                            </tr>
+                            <!-- Person 6 -->
+                            <tr class="bg-gray-900 border-b border-gray-700">
+                                <td class="px-3 py-2 border-r border-neon cyber-mono">P006</td>
+                                <td class="px-3 py-2 border-r border-neon cyber-mono">Blue</td>
+                                <td class="px-3 py-2 cyber-mono">Blonde</td>
+                            </tr>
+                            <!-- Person 7 -->
+                            <tr class="bg-gray-900 border-b border-gray-700">
+                                <td class="px-3 py-2 border-r border-neon cyber-mono">P007</td>
+                                <td class="px-3 py-2 border-r border-neon cyber-mono">Brown</td>
+                                <td class="px-3 py-2 cyber-mono">Dark</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- End of Collected Data Table -->
+                
+                <!-- Explanation below the table -->
+                <h4 class="text-xl font-bold subsection-header mb-4 mt-6">DISTRIBUTION</h4>
+                <p class="text-base leading-relaxed text-gray-400 mb-3">
+                    The distribution for a categorical variable is the <b>frequency</b> with which each category appears in the <b>initial observations</b>.
+                </p>
+                <p class="text-base leading-relaxed text-gray-400 mb-2">
+                    <b>Eye Color:</b> The distribution shows that "Brown" is the most frequent category (4 occurrences), followed by "Blue" (2 occurrences) and "Green" (1 occurrence). (Total: 7 observations)
+                </p>
+                <p class="text-base leading-relaxed text-gray-400 mb-4">
+                    <b>Hair Color:</b> Similarly, "Dark" is the prevailing category (4 occurrences), followed by "Blonde" (2 occurrences) and "Red" (1 occurrence). (Total: 7 observations)
+                </p>
+            </div>
+        </section>
+
+
+        <!-- SECOND QUESTION: K Univariate Distributions (K=3) -->
+        <section class="mb-12 mt-12">
+            <h3 class="text-3xl font-bold uppercase text-neon section-header cyber-mono">
+                Compute the K univariate distributions
+            </h3>
+            
+            <div class="p-6 bg-gray-900/50 brutal-border">
+                
+                <p class="text-lg leading-relaxed text-gray-300 mb-6">
+                    Calculating the <b>univariate distribution</b> means summarizing the <b>collected observations</b> of a single variable to understand its shape, central tendency, and variability. Since the variables are categorical, the distribution is expressed through frequency tables (Absolute Frequency).
+                </p>
+
+                <!-- DISTRIBUTION 1: Eye_Color (Categorical) - ONLY ABSOLUTE FREQUENCIES -->
+                <h4 class="text-xl font-bold subsection-header mb-4 mt-6">1. Distribution: Eye Color (Eye_Color)</h4>
+                
+                <div class="overflow-x-auto mb-6">
+                    <table class="w-full text-sm text-left border-collapse border border-neon">
+                        <thead class="text-xs uppercase bg-gray-800 border-b-2 border-neon">
+                            <tr>
+                                <th scope="col" class="px-3 py-2 border-r border-neon">Category</th>
+                                <th scope="col" class="px-3 py-2">Absolute Frequency ($n_i$)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-gray-900 border-b border-gray-700">
+                                <td class="px-3 py-2 border-r border-neon">Brown</td>
+                                <td class="px-3 py-2">4</td>
+                            </tr>
+                            <tr class="bg-gray-900 border-b border-gray-700">
+                                <td class="px-3 py-2 border-r border-neon">Blue</td>
+                                <td class="px-3 py-2">2</td>
+                            </tr>
+                            <tr class="bg-gray-900 border-b border-gray-700">
+                                <td class="px-3 py-2 border-r border-neon">Green</td>
+                                <td class="px-3 py-2">1</td>
+                            </tr>
+                            <tr class="bg-gray-800 font-bold text-neon">
+                                <td class="px-3 py-2 border-r border-neon">Total</td>
+                                <td class="px-3 py-2">7</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- DISTRIBUTION 2: Hair_Color (Categorical) - ONLY ABSOLUTE FREQUENCIES -->
+                <h4 class="text-xl font-bold subsection-header mb-4 mt-6">2. Distribution: Hair Color (Hair_Color)</h4>
+
+                <div class="overflow-x-auto mb-6">
+                    <table class="w-full text-sm text-left border-collapse border border-neon">
+                        <thead class="text-xs uppercase bg-gray-800 border-b-2 border-neon">
+                            <tr>
+                                <th scope="col" class="px-3 py-2 border-r border-neon">Category</th>
+                                <th scope="col" class="px-3 py-2">Absolute Frequency ($n_i$)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-gray-900 border-b border-gray-700">
+                                <td class="px-3 py-2 border-r border-neon">Dark</td>
+                                <td class="px-3 py-2">4</td>
+                            </tr>
+                            <tr class="bg-gray-900 border-b border-gray-700">
+                                <td class="px-3 py-2 border-r border-neon">Blonde</td>
+                                <td class="px-3 py-2">2</td>
+                            </tr>
+                            <tr class="bg-gray-900 border-b border-gray-700">
+                                <td class="px-3 py-2 border-r border-neon">Red</td>
+                                <td class="px-3 py-2">1</td>
+                            </tr>
+                            <tr class="bg-gray-800 font-bold text-neon">
+                                <td class="px-3 py-2 border-r border-neon">Total</td>
+                                <td class="px-3 py-2">7</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- UPDATED SQL SECTION -->
+        <section class="mb-12 mt-12">
+            
+            <div class="p-6 bg-gray-900/50 brutal-border">
+                
+                <h4 class="text-xl font-bold subsection-header mb-4 mt-6 text-neon">SQL query that would produce the same result:</h4>
+                
+                <p class="text-lg leading-relaxed text-gray-300 mb-3">
+                    <b>Univariate Distribution (Absolute Frequencies) Example:</b>
+                </p>
+                
+                <div class="code-block-brutal text-sm">
+                    <pre class="cyber-mono text-neon">
+SELECT
+    Eye_Color,
+    COUNT(*) AS Absolute_Frequency
+FROM
+    People
+GROUP BY
+    Eye_Color;
+</pre>
+                </div>
+
+                <!-- ENGLISH EXPLANATION -->
+                <p class="text-lg leading-relaxed text-gray-300 mb-3 mt-6">
+                    This single query can be reused to calculate the distribution of any categorical variable simply by replacing the column name (for example, replacing <span class="cyber-mono text-neon">Eye_Color</span> with <span class="cyber-mono text-neon">Hair_Color</span>) in the <span class="cyber-mono text-neon">SELECT</span> and the <span class="cyber-mono text-neon">GROUP BY</span> clauses.
+                </p>
+
+            </div>
+        </section>
+        <!-- END OF SQL SECTION -->
+
+
+        <!-- Letter frequency analysis (computed from provided passage) -->
+        <section class="mb-12 mt-12">
+            <h3 class="text-3xl font-bold uppercase text-neon section-header cyber-mono">
+                Letter frequency analysis (passage excerpt)
+            </h3>
+
+            <div class="p-6 bg-gray-900/50 brutal-border">
+                <p class="text-base leading-relaxed text-gray-400 mb-4">
+                    The distribution below shows normalized letter frequencies computed from the requested Italian passage. Numbers, punctuation and whitespace were removed; accents were normalized to base letters (e.g. <code>à</code> → <code>a</code>). The original passage is kept only inside a hidden script block for reproducibility and is not displayed on the page.
+                </p>
+
+                <div id="letter-frequency" class="text-sm">
+                    <div id="lf-chart" class="mb-4"></div>
+                    <div id="lf-table" class="overflow-x-auto"></div>
+                </div>
+
+                <style>
+                    /* Letter frequency mini-graph */
+                    .lf-row{display:flex;align-items:center;margin:6px 0;font-family:monospace}
+                    .lf-label{width:28px;color:var(--neon-color);margin-right:8px}
+                    .lf-bar{flex:1;height:18px;background:#1f2937;border:1px solid rgba(250,250,250,0.06);position:relative}
+                    .lf-fill{height:100%;background:linear-gradient(90deg, var(--neon-color), #d1d5db);color:#000;padding-left:8px;display:flex;align-items:center;font-weight:700}
+                    .lf-count{width:48px;text-align:right;margin-left:8px;color:#cbd5e1}
+                </style>
+
+                <!-- Hidden passage (kept in source only) -->
+                <script id="passage" type="text/plain" style="display:none">
+Lunedí 13 settembre. Les Salines
+È uno scenario piuttosto straordinario quest’
+abbozzo di città abbandonata
+ai bordi di un villaggio e al margine dei secoli. Ho percorso una metà
+dell’
+emiciclo, ho salito la gradinata del padiglione centrale, e per un pezzo
+sono rimasta a contemplare questi edifici costruiti per fini utilitari e che non
+sono mai serviti a niente. Sono solidi, esistono, eppure il fatto di essere
+abbandonati li trasforma in un simulacro fantastico; di che cosa, non si sa.
+L’
+erba calda, sotto il cielo d’
+autunno, e l’
+odore delle foglie morte
+’
+m
+assicuravano che non avevo lasciato questo mondo, ma ero tornata
+indietro, nel passato, di duecento anni. Sono andata a prendere della roba
+nella macchina; ho steso in terra una coperta, vi ho posato dei cuscini, la radio
+a transistor, e mi sono messa a fumare, ascoltando Mozart. Dietro due o tre
+finestre polverose indovinavo delle presenze: sono sicuramente uffici. Un
+camion si è fermato davanti a uno dei pesanti portoni, alcuni uomini l'hanno
+aperto, hanno caricato dei sacchi nel cassone. Nient’
+altro ha turbato il silenzio
+di questo pomeriggio: nessun visitatore. Finito il concerto, mi son messa a
+leggere. Mi sentivo doppiamente spaesata: me ne andavo lontano, lungo la
+riva di un fiume sconosciuto: alzavo gli occhi, e mi ritrovavo in mezzo a
+queste pietre, lontana dalla mia vita.
+Poiché la cosa piú sorprendente è la mia presenza qui, e il fatto che mi
+senta cosí allegra. Temevo la solitudine di questo ritorno verso Parigi. Finora,
+quando non c
+’è Maurice, le bambine mi accompagnavano in tutti i miei
+viaggi. Pensavo che avrei sentito la mancanza dei rapimenti di Colette, delle
+esigenze di Lucienne. E invece, ecco che provo un tipo di gioia che avevo del
+tutto dimenticato. Un senso di libertà che mi ringiovanisce di vent’
+anni. Al punto che, chiuso il libro, mi sono messa a scrivere, per me stessa, come a
+vent’
+anni.
+Ogni volta che mi separo da Maurice, non è mai a cuor leggero. Il
+congresso dura appena una settimana, eppure, mentre andavamo da Mougins
+all’
+aeroporto di Nizza, avevo la gola stretta. Anche lui era commosso. Quando
+l’
+altoparlante ha chiamato i viaggiatori per Roma, mi ha abbracciata forte,
+–
+Sta
+’
+attenta a non ammazzarti, in macchina.
+– Sta
+’
+attento a non ammazzarti
+in aereo –. Prima di scomparire si è voltato ancora una volta: c
+’
+’era un
+ansia,
+nei suoi occhi, che mi ha toccata a fondo. Il decollo mi è parso drammatico. I
+quadrimotori partono pian piano, è un lungo arrivederci. Il jet si è strappato
+da terra con la brutalità di un addio.
+Ma ben presto ho cominciato a sentirmi felice. No, l’
+assenza delle mie figlie
+non mi rattristava, al contrario. Potevo guidare in fretta, o piano, come mi
+pareva, andare dove volevo, fermarmi dove mi saltava. Ho deciso di passare
+questa settimana a vagabondare. Mi alzo con la luce del giorno. La macchina
+mi aspetta sulla strada, in cortile, come un animale fedele: è umida di rugiada;
+le asciugo gli occhi, e fendo gioiosamente la giornata che comincia a indorarsi
+di sole. Posata accanto a me, la mia sacca bianca con le carte Michelin, la
+Guide bleu, dei libri, un golf, le sigarette, è una compagna di viaggio piena di
+discrezione. Nessuno si secca quando chiedo alla padrona dell’
+albergo la
+ricetta del suo pollo ai gamberi.
+Sta per scendere la sera, ma l’
+aria è ancora tiepida. È uno di quei momenti
+toccanti, in cui la terra è cosí ben intonata agli uomini che sembra impossibile
+che tutti non siano felici.
+Martedí 14 settembre
+Una delle cose che piacevano tanto a Maurice è l’intensità di quella che lui
+chiamava «la mia attenzione alla vita». Durante questo breve colloquio a tu
+per tu con me stessa, si è rianimata. Ora che Colette è sposata, e Lucienne è in
+America, avrò tutte le possibilità di coltivarla.
+– Ti annoierai. Dovresti
+metterti a fare qualcosa, prenderti un lavoro,
+– mi ha detto Maurice a
+Mougins. Ha insistito. Ma, almeno per ora, non ne sento il bisogno.
+Finalmente, voglio vivere un po’
+per me stessa. E approfittare con Maurice di
+questa solitudine a due di cui siamo stati privati per tanto tempo. Ho un
+mucchio di progetti in testa.
+                </script>
+
+                <script>
+                    (function(){
+                        // Read hidden passage
+                        const raw = document.getElementById('passage').textContent || '';
+                        // Normalize accents: NFKD then remove combining marks
+                        const normalized = raw.normalize('NFKD').replace(/\p{Diacritic}/gu, '');
+                        // Keep only letters a-z (case-insensitive)
+                        const lettersOnly = normalized.toLowerCase().replace(/[^a-z]/g, '');
+
+                        const counts = {};
+                        for (const ch of lettersOnly){
+                            counts[ch] = (counts[ch] || 0) + 1;
+                        }
+
+                        // Prepare sorted letter array
+                        const letters = Object.keys(counts).sort();
+                        const max = Math.max(...Object.values(counts), 1);
+
+                        const chart = document.getElementById('lf-chart');
+                        const table = document.getElementById('lf-table');
+
+                        // Render simple bar rows
+                        for (const l of letters){
+                            const c = counts[l];
+                            const pct = Math.round((c / max) * 100);
+                            const row = document.createElement('div');
+                            row.className = 'lf-row';
+                            row.innerHTML = `<div class="lf-label">${l}</div>`+
+                                            `<div class="lf-bar"><div class="lf-fill" style="width:${pct}%">${c}</div></div>`+
+                                            `<div class="lf-count">${c}</div>`;
+                            chart.appendChild(row);
+                        }
+
+                        // Render small counts table (two columns)
+                        const tbl = document.createElement('table');
+                        tbl.className = 'w-full text-sm text-left border-collapse mt-4';
+                        let html = '<thead class="text-xs uppercase bg-gray-800 border-b-2 border-neon"><tr><th class="px-3 py-2">Letter</th><th class="px-3 py-2">Count</th></tr></thead><tbody>';
+                        for (const l of letters){ html += `<tr class="bg-gray-900 border-b border-gray-700"><td class="px-3 py-2">${l}</td><td class="px-3 py-2">${counts[l]}</td></tr>` }
+                        html += '</tbody>';
+                        tbl.innerHTML = html;
+                        table.appendChild(tbl);
+                    })();
+                </script>
+            </div>
+        </section>
+
+
+        <!-- Finl block to close the article -->
+        <div class="p-4 bg-gray-900/70 border-t-4 border-neon mt-8">
+            <p class="text-center font-mono text-sm text-gray-500">
+                [ END OF LINE / PROCESS TERMINATED ]
+            </p>
+        </div>
+
+    </main>
+
+    <footer class="bg-black mt-12 p-6 md:p-8 border-t-8 border-neon">
+        <div class="container mx-auto text-sm font-mono uppercase tracking-wider text-center text-gray-500">
+            [ STATISTICS BLOG // HUMAN TRAITS ]
+        </div>
+    </footer>
+
+</body>
+</html>
