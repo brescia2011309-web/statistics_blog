@@ -341,7 +341,7 @@ GROUP BY
 
             <div class="p-6 bg-gray-900/50 brutal-border">
                 <p class="text-base leading-relaxed text-gray-400 mb-4">
-                    The distribution below shows normalized letter frequencies computed from the requested Italian passage. Numbers, punctuation and whitespace were removed; accents were normalized to base letters (e.g. <code>à</code> → <code>a</code>). The original passage is kept only inside a hidden script block for reproducibility and is not displayed on the page.
+                    The distribution below shows the normalized letter frequencies computed from the first three pages of Simone de Beauvoir’s book La femme rompue. Numbers, punctuation and whitespace were removed; accents were normalized to base letters (e.g. <code>à</code> → <code>a</code>). The original passage is kept only inside a hidden script block for reproducibility and is not displayed on the page.
                 </p>
 
                 <div id="letter-frequency" class="text-sm">
@@ -535,10 +535,20 @@ mucchio di progetti in testa.
             </div>
         </section>
 
-        <!-- Finl block to close the article -->
+        <!-- Final block to close the article -->
         <div class="p-6 mt-6 bg-gray-900/40 border-t border-gray-800">
+            <h4 class="text-xl font-bold subsection-header mb-4 mt-0 text-neon">Decoding the Caesar Cipher</h4>
+
+            <p class="text-base leading-relaxed text-gray-400 mb-3">
+                To decode the text encrypted with the Caesar cipher, I compared the frequency distribution of letters in the original and in the encrypted version. In the original text, the most frequent letter was A, while in the encrypted text, the most frequent letter became D.
+            </p>
+
+            <p class="text-base leading-relaxed text-gray-400 mb-3">
+                Since in the Caesar cipher each letter is shifted by a fixed number of positions in the alphabet, the difference between these two letters shows the shift used in the encryption. In this case, A → D corresponds to a shift of +3.
+            </p>
+
             <p class="text-base leading-relaxed text-gray-400">
-                Final note — how the shift is deduced: by comparing the two letter-frequency distributions you can infer the Caesar shift because a Caesar cipher simply relabels letters. In practice, identify the most frequent letters in the original text (for Italian typically <strong>"a, e, i, o, n, r"</strong> are common) and match them to the most frequent letters in the shifted distribution. The mapping between the top letters gives a candidate shift (for example if original <code>a</code> maps to <code>d</code>, the shift is +3). To be robust, compute the shift that minimizes a goodness-of-fit metric (chi-squared) between the shifted candidate distribution and expected Italian frequencies, or test the top few candidate shifts by applying them and checking the percentage of valid Italian words. This combination of frequency alignment and small validation on real words reliably reveals the unknown Caesar shift.
+                To decode the text, we simply reverse this process: we shift every letter three positions backward in the alphabet. This restores the original text and confirms that the encryption used a Caesar cipher with a shift of +3.
             </p>
         </div>
         <div class="p-4 bg-gray-900/70 border-t-4 border-neon mt-8">
