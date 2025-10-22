@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework 3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Import e Stili di Base */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900;200&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Sfondo ultra-scuro */
+            background-color: #0d0d0d; 
+            color: #e5e7eb; /* Testo grigio chiaro */
+        }
+        
+        /* Colore Neon Accento (BIANCO/GRIGIO DIGITALE per Cybersigilism) */
+        :root {
+            --neon-color: #FAFAFA; 
+            --dark-border: #1f2937;
+        }
+
+        /* Stili Brutalisti + Sigil Effect per i Box */
+        .brutal-border {
+            border: 4px solid var(--neon-color); 
+            transition: all 0.15s ease-out;
+        }
+        .brutal-border:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 3px 3px 0 var(--neon-color), 0 0 8px rgba(250, 250, 250, 0.3); 
+        }
+        
+        /* Glow e Monospace per elementi tecnici/importanti */
+        .cyber-mono {
+            font-family: monospace;
+        }
+        .cyber-glow-text {
+            text-shadow: 0 0 5px rgba(250, 250, 250, 0.4);
+        }
+        .text-neon {
+            color: var(--neon-color);
+        }
+        
+        /* Stile per le intestazioni di Sezione (H3) */
+        .section-header {
+            border-left: 8px solid var(--neon-color);
+            padding-left: 1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        /* Stile per i blocchi di Codice/Definizione */
+        .code-block-brutal {
+            background-color: #1f2937; /* Grigio scuro/nero per lo sfondo del codice */
+            border: 2px solid var(--neon-color);
+            padding: 1rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            overflow-x: auto;
+        }
+
+        /* Nuovo stile per le formule all'interno del codice block, per centrarle */
+        .formula {
+            display: block;
+            text-align: center;
+            font-size: 1.5rem; /* Rende la formula più visibile */
+            padding: 0.5rem 0;
+            color: #fff;
+            white-space: nowrap; /* Evita interruzioni di riga */
+        }
+    </style>
+</head>
+<body class="text-gray-200">
+
+    <header class="bg-black p-6 border-b-4 border-neon">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-sm font-mono tracking-wider text-neon hover:text-gray-400 transition-colors">
+                ← /MAIN_INDEX
+            </a>
+            <span class="text-sm font-mono tracking-wider text-gray-500">
+                //HOMEWORK_03
+            </span>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 md:px-12 py-12">
+        
+        <h1 class="text-5xl sm:text-6xl font-black uppercase mb-4 text-neon cyber-glow-text cyber-mono tracking-tight">
+            RSA ALGORITHM
+        </h1>
+        
+        <p class="text-lg font-mono mb-10 text-gray-500 border-b-2 border-gray-700 pb-4">
+            <!-- Line removed: Modulo: Crittografia e Sicurezza / Argomento: Rivest–Shamir–Adleman (RSA) -->
+        </p>
+
+        <!-- INTRODUZIONE / ABSTRACT -->
+        <section class="mb-12 p-6 bg-gray-900/50 brutal-border">
+            <p class="text-lg leading-relaxed text-gray-300">
+                The <strong>RSA</strong> algorithm, named after its inventors (Rivest, Shamir, and Adleman), is the cornerstone of modern <strong>public-key cryptography</strong> (or asymmetric cryptography). Its invention revolutionized how we manage digital security, allowing two parties who have never met to exchange information confidentially and authenticate the sender's identity. Its robustness is intrinsically linked to a mathematical problem that number theory considers difficult to solve: the <strong>factorization of very large prime numbers</strong>. 
+            </p>
+        </section>
+
+        <!-- SECTION 1: Key Pair Generation -->
+        <h3 class="text-3xl font-bold uppercase text-neon section-header">
+            [01] GENERATING THE KEY PAIR
+        </h3>
+        
+        <p class="text-lg leading-relaxed mb-6">
+            RSA security begins with the choice of two enormous, random prime numbers, <span class="cyber-mono">p</span> and <span class="cyber-mono">q</span>. These numbers are used to generate the public modulus <span class="cyber-mono">N</span> and the two keys, public and private.
+        </p>
+
+        <ul class="list-none space-y-4 mb-8 text-gray-300">
+            <li class="bg-gray-800 p-3 rounded-md border-l-4 border-lime-400 shadow-lg">
+                <span class="font-bold text-lime-400">STEP 1: Modulus</span>
+                <span class="cyber-mono ml-4 text-gray-400">// Public Base</span><br>
+                <span class="formula cyber-mono">N = p &middot; q</span>
+            </li>
+            <li class="bg-gray-800 p-3 rounded-md border-l-4 border-yellow-400 shadow-lg">
+                <span class="font-bold text-yellow-400">STEP 2: Euler's Totient (φ(N))</span>
+                <span class="cyber-mono ml-4 text-gray-400">// Required for Private Key</span><br>
+                <span class="formula cyber-mono">φ(N) = (p - 1) &middot; (q - 1)</span>
+            </li>
+            <li class="bg-gray-800 p-3 rounded-md border-l-4 border-cyan-400 shadow-lg">
+                <span class="font-bold text-cyan-400">STEP 3: Public Exponent (e)</span>
+                <span class="cyber-mono ml-4 text-gray-400">// Must be 1 &lt; e &lt; φ(N) and gcd(e, φ(N))=1</span>
+            </li>
+            <li class="bg-gray-800 p-3 rounded-md border-l-4 border-red-400 shadow-lg">
+                <span class="font-bold text-red-400">STEP 4: Private Exponent (d)</span>
+                <span class="cyber-mono ml-4 text-gray-400">// Multiplicative Inverse of e mod φ(N)</span><br>
+                <span class="formula cyber-mono">d &middot; e &equiv; 1 (mod φ(N))</span>
+            </li>
+        </ul>
+        
+        <div class="p-4 bg-gray-900/70 border-l-8 border-gray-500 mb-10">
+            <p class="font-mono text-base text-gray-400">
+                **Public Key (Encrypt)**: {e, N}<br>
+                **Private Key (Decrypt)**: {d, N}
+            </p>
+        </div>
+        
+        <!-- NUOVO PARAGRAFO: Introduzione al passo successivo -->
+        <section class="mt-12 p-6 bg-gray-900/50 brutal-border border-l-4 border-yellow-500">
+            <h3 class="text-2xl font-bold uppercase text-yellow-500 mb-4 section-header">
+                [02] APPLICATION PREPARATION
+            </h3>
+            <p class="text-lg leading-relaxed text-gray-300">
+                To move from theory to practice, the next steps will demonstrate how to use the RSA algorithm for encryption and decryption. We will use the previously chosen text excerpt by Simone de Beauvoir as our plaintext input to understand how the numerical message (<span class="cyber-mono">M</span>) is processed using the public key and recovered using the private key. This exercise will clarify the flow of information protection in public-key cryptography.
+            </p>
+        </section>
+
+        <!-- RSA Demo: encrypt, factor, decrypt, frequency check -->
+        <section id="rsa-demo" class="mb-12 mt-12 p-6 bg-gray-900/50 brutal-border">
+            <h3 class="text-2xl font-bold uppercase text-neon section-header cyber-mono">RSA demo: encrypt &amp; verify with Italian distribution</h3>
+
+            <p class="text-base leading-relaxed text-gray-400 mb-4">
+                This demo uses very small primes (educational only). The passage is kept hidden in the page for reproducibility. The script will: normalize the passage, encode it in two-letter base-26 blocks, encrypt with RSA (public key shown), then factor the modulus, recover the private key, decrypt, and compute a chi-squared score against approximate Italian letter frequencies to verify the result.
+            </p>
+
+            <!-- Hidden passage (copied here for the demo) -->
+            <script id="demo-passage" type="text/plain" style="display:none">
+Lunedí 13 settembre. Les Salines
+È uno scenario piuttosto straordinario quest’
+abbozzo di città abbandonata
+ai bordi di un villaggio e al margine dei secoli. Ho percorso una metà
+dell’
+emiciclo, ho salito la gradinata del padiglione centrale, e per un pezzo
+sono rimasta a contemplare questi edifici costruiti per fini utilitari e che non
+sono mai serviti a niente. Sono solidi, esistono, eppure il fatto di essere
+abbandonati li trasforma in un simulacro fantastico; di che cosa, non si sa.
+L’
+erba calda, sotto il cielo d’
+autunno, e l’
+odore delle foglie morte
+’
+m
+assicuravano che non avevo lasciato questo mondo, ma ero tornata
+indietro, nel passato, di duecento anni. Sono andata a prendere della roba
+nella macchina; ho steso in terra una coperta, vi ho posato dei cuscini, la radio
+a transistor, e mi sono messa a fumare, ascoltando Mozart. Dietro due o tre
+finestre polverose indovinavo delle presenze: sono sicuramente uffici. Un
+camion si è fermato davanti a uno dei pesanti portoni, alcuni uomini l'hanno
+aperto, hanno caricato dei sacchi nel cassone. Nient’
+altro ha turbato il silenzio
+di questo pomeriggio: nessun visitatore. Finito il concerto, mi son messa a
+leggere. Mi sentivo doppiamente spaesata: me ne andavo lontano, lungo la
+riva di un fiume sconosciuto: alzavo gli occhi, e mi ritrovavo in mezzo a
+queste pietre, lontana dalla mia vita.
+Poiché la cosa piú sorprendente è la mia presenza qui, e il fatto che mi
+senta cosí allegra. Temevo la solitudine di questo ritorno verso Parigi. Finora,
+quando non c
+è Maurice, le bambine mi accompagnavano in tutti i miei
+viaggi. Pensavo che avrei sentito la mancanza dei rapimenti di Colette, delle
+esigenze di Lucienne. E invece, ecco che provo un tipo di gioia che avevo del
+tutto dimenticato. Un senso di libertà che mi ringiovanisce di vent’
+anni. Al punto che, chiuso il libro, mi sono messa a scrivere, per me stessa, come a
+vent’
+anni.
+Ogni volta che mi separo da Maurice, non è mai a cuor leggero. Il
+congresso dura appena una settimana, eppure, mentre andavamo da Mougins
+            </script>
+
+            <div id="status" class="text-sm text-lime-400 cyber-mono mb-2"></div>
+            <div id="rsa-output" class="p-4 bg-gray-900/40 brutal-border text-sm cyber-mono"></div>
+
+            <script>
+                    function runRsaDemo(){
+                    // normalize: NFKD, remove diacritics, keep a-z
+                    function normalize(text){
+                        try{ text = text.normalize('NFKD').replace(/\p{Diacritic}/gu,''); } catch(e){}
+                        return text.toLowerCase().replace(/[^a-z]/g,'');
+                    }
+
+                    function encodePairs(s){
+                        if(s.length % 2 === 1) s += 'x';
+                        const out = [];
+                        for(let i=0;i<s.length;i+=2){
+                            const a = s.charCodeAt(i)-97;
+                            const b = s.charCodeAt(i+1)-97;
+                            out.push(a*26 + b);
+                        }
+                        return out;
+                    }
+
+                    function decodePairs(blocks){
+                        let o = '';
+                        for(const v of blocks){
+                            const a = Math.floor(v/26);
+                            const b = v % 26;
+                            o += String.fromCharCode(a+97) + String.fromCharCode(b+97);
+                        }
+                        return o;
+                    }
+
+                    // gcd / egcd for modular inverse
+                    function egcd(a,b){
+                        if(b===0) return [a,1,0];
+                        const r = egcd(b, a%b);
+                        return [r[0], r[2], r[1] - Math.floor(a/b)*r[2]];
+                    }
+                    function modinv(a,m){
+                        const r = egcd(a,m);
+                        if(r[0] !== 1) throw new Error('no inv');
+                        return (r[1]%m + m) % m;
+                    }
+
+                    // trial factor small n
+                    function factorSmall(n){
+                        for(let i=2;i<=Math.floor(Math.sqrt(n));i++) if(n%i===0) return [i, n/i];
+                        return null;
+                    }
+
+                    function freq(s){
+                        const cnt = {};
+                        for(const ch of s) cnt[ch] = (cnt[ch]||0)+1;
+                        const n = s.length || 1;
+                        const out = {};
+                        for(let i=0;i<26;i++){
+                            const ch = String.fromCharCode(97+i);
+                            out[ch] = (cnt[ch]||0)/n;
+                        }
+                        return out;
+                    }
+
+                    function chi2(obs, exp){
+                        let s = 0;
+                        for(const ch of Object.keys(exp)){
+                            const o = obs[ch]||0;
+                            const e = exp[ch]||1e-6;
+                            s += (o-e)*(o-e)/(e>0?e:1e-6);
+                        }
+                        return s;
+                    }
+
+                    // italian expected (approx)
+                    const italian_expected = {a:0.117,b:0.012,c:0.049,d:0.037,e:0.118,f:0.01,g:0.017,h:0.007,i:0.106,j:0.0001,k:0.0001,l:0.065,m:0.025,n:0.067,o:0.098,p:0.035,q:0.009,r:0.063,s:0.049,t:0.056,u:0.031,v:0.023,w:0.0001,x:0.0001,y:0.0001,z:0.012};
+
+                    const raw = document.getElementById('demo-passage').textContent || '';
+                    const s = normalize(raw);
+                    const blocks = encodePairs(s);
+
+                    // small RSA
+                    const p = 61, q = 53;
+                    const n = p*q;
+                    const phi = (p-1)*(q-1);
+                    const e = 17;
+                    const d = modinv(e, phi);
+
+                    // modular exponent (safe integer modular pow)
+                    function powmod(base, exp, mod){
+                        let res = 1;
+                        base = base % mod;
+                        while(exp > 0){
+                            if(exp & 1) res = (res * base) % mod;
+                            base = (base * base) % mod;
+                            exp = Math.floor(exp/2);
+                        }
+                        return res;
+                    }
+
+                    // encrypt using modular exponentiation to avoid floating-point issues
+                    const cipher = blocks.map(m => powmod(m, e, n));
+
+                    // attacker factors n
+                    const factors = factorSmall(n);
+                    let recovered = '';
+                    let chi = null;
+                    if(factors){
+                        const fp = factors[0], fq = factors[1];
+                        const phi2 = (fp-1)*(fq-1);
+                        const d2 = modinv(e, phi2);
+                        const plain = cipher.map(c => {
+                            // modular exponent: use simple powmod
+                            let res = 1, base = c % n, exp = d2;
+                            while(exp>0){ if(exp&1) res = (res*base)%n; base=(base*base)%n; exp = Math.floor(exp/2); }
+                            return res;
+                        });
+                        recovered = decodePairs(plain);
+                        chi = chi2(freq(recovered), italian_expected);
+                    }
+
+                    const out = document.getElementById('rsa-output');
+                    out.innerHTML = '';
+                    // metadata
+                    out.appendChild(Object.assign(document.createElement('div'), {innerHTML:`<strong>Public key</strong>: e=${e}, n=${n}`}));
+                    out.appendChild(Object.assign(document.createElement('div'), {innerHTML:`<strong>Ciphertext (first 20 blocks)</strong>: ${cipher.slice(0,20).join(', ')}`}));
+                    if(factors){
+                        out.appendChild(Object.assign(document.createElement('div'), {innerHTML:`<strong>Factored n</strong>: ${factors[0]} &times; ${factors[1]}`}));
+                    }
+
+                    // Insert chart containers
+                    const chartsWrap = document.createElement('div');
+                    chartsWrap.style.marginTop = '12px';
+                    chartsWrap.innerHTML = `
+                        <style>
+                            .lf-row{display:flex;align-items:center;margin:6px 0;font-family:monospace}
+                            .lf-label{width:28px;color:var(--neon-color);margin-right:8px}
+                            .lf-bar{flex:1;height:18px;background:#1f2937;border:1px solid rgba(250,250,250,0.06);position:relative}
+                            .lf-fill{height:100%;background:linear-gradient(90deg, var(--neon-color), #d1d5db);color:#000;padding-left:8px;display:flex;align-items:center;font-weight:700}
+                        </style>
+                        <div style="margin-top:8px"><strong>Original letter distribution</strong></div>
+                        <div id="orig-chart" class="mb-4"></div>
+                        <div style="margin-top:8px"><strong>RSA-encrypted letter distribution (cipher % 26)</strong></div>
+                        <div id="rsa-chart" class="mb-4"></div>
+                    `;
+                    out.appendChild(chartsWrap);
+
+                    // compute original counts
+                    const origCounts = {};
+                    for(const ch of s){ origCounts[ch] = (origCounts[ch]||0) + 1; }
+
+                    console.log('RSA demo: raw length', raw.length, 'normalized length', s.length, 'blocks', blocks.length);
+
+                    // compute rsa-mapped counts (cipher % 26 -> letter)
+                    const rsaCounts = {};
+                    for(const c of cipher){ const letter = String.fromCharCode((c % 26) + 97); rsaCounts[letter] = (rsaCounts[letter]||0) + 1; }
+
+                    console.log('origCounts', origCounts);
+                    console.log('rsaCounts', rsaCounts);
+
+                    function renderCounts(containerId, counts){
+                        const chart = document.getElementById(containerId);
+                        chart.innerHTML = '';
+                        // ensure we render all letters a-z so empty letters still show up
+                        const letters = [];
+                        for(let i=0;i<26;i++) letters.push(String.fromCharCode(97+i));
+                        const max = Math.max(...Object.values(counts), 1);
+                        for(const l of letters){
+                            const c = counts[l] || 0;
+                            const pct = Math.round((c / max) * 100);
+                            const row = document.createElement('div');
+                            row.className = 'lf-row';
+                            row.innerHTML = `<div class="lf-label">${l}</div>`+
+                                            `<div class="lf-bar"><div class="lf-fill" style="width:${pct}%">${c}</div></div>`;
+                            chart.appendChild(row);
+                        }
+                    }
+
+                    renderCounts('orig-chart', origCounts);
+                    renderCounts('rsa-chart', rsaCounts);
+
+                    // visible debug: numeric counts below charts
+                    const debug = document.createElement('pre');
+                    debug.style.marginTop = '8px';
+                    debug.style.color = 'var(--neon-color)';
+                    debug.style.fontFamily = 'monospace';
+                    debug.textContent = 'origCounts: ' + JSON.stringify(origCounts, null, 2) + '\n\nrsaCounts: ' + JSON.stringify(rsaCounts, null, 2);
+                    out.appendChild(debug);
+
+                    // recovered plaintext and chi if present
+                    if(factors){
+                        out.appendChild(Object.assign(document.createElement('div'), {innerHTML:`<strong>Recovered normalized plaintext (first 200 chars)</strong>: <code>${recovered.slice(0,200)}</code>`}));
+                        out.appendChild(Object.assign(document.createElement('div'), {innerHTML:`<strong>Chi-squared vs Italian</strong>: ${chi.toFixed(4)}`}));
+                    }
+                    // update optional status element if present (avoid runtime error)
+                    const statusEl = document.getElementById('status');
+                    if(statusEl) statusEl.textContent = 'Done';
+                    }
+
+                    // If a run button exists keep it wired, and also auto-run the demo so
+                    // the page behaves like homework2 (no user click required).
+                    const runBtn = document.getElementById('run-rsa');
+                    if(runBtn) runBtn.addEventListener('click', runRsaDemo);
+                    // Auto-run shortly after parsing to avoid timing edge-cases
+                    try{ setTimeout(runRsaDemo, 0); } catch(e){ /* fail silently in older browsers */ }
+            </script>
+        </section>
+
+        <!-- Final block maintained to close the article -->
+        <div class="p-4 bg-gray-900/70 border-t-4 border-neon mt-8">
+            <p class="text-center font-mono text-sm text-gray-500">
+                [ END OF LINE / PROCESS TERMINATED ]
+            </p>
+        </div>
+
+    </main>
+
+    <footer class="bg-black mt-12 p-6 md:p-8 border-t-8 border-neon">
+        <div class="container mx-auto text-sm font-mono uppercase tracking-wider text-center text-gray-500">
+            [ ASYMMETRIC CRYPTOGRAPHY // ADVANCED STUDIES ]
+        </div>
+    </footer>
+
+</body>
+</html>
