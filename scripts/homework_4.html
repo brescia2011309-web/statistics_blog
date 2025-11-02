@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework 4 - Cryptography and Statistics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Chart.js if needed later -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <style>
+        /* Import e Stili di Base (copiati da homework_3) */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900;200&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d0d0d; 
+            color: #e5e7eb;
+        }
+        :root {
+            --neon-color: #FAFAFA;
+            --dark-border: #1f2937;
+            --accent-color: #00FFC2;
+        }
+        .brutal-border {
+            border: 4px solid var(--neon-color);
+            transition: all 0.15s ease-out;
+        }
+        .brutal-border:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 3px 3px 0 var(--neon-color), 0 0 8px rgba(250, 250, 250, 0.3);
+        }
+        .cyber-mono { font-family: monospace; }
+        .cyber-glow-text { text-shadow: 0 0 5px rgba(250, 250, 250, 0.4); }
+        .text-neon { color: var(--neon-color); }
+        .section-header {
+            border-left: 8px solid var(--neon-color);
+            padding-left: 1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        .code-block-brutal {
+            background-color: #1f2937;
+            border: 2px solid var(--neon-color);
+            padding: 1rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            overflow-x: auto;
+        }
+        .formula { display: block; text-align: center; font-size: 1.5rem; padding: 0.5rem 0; color: #fff; white-space: nowrap; }
+        .cyber-input { background-color: #1f2937; color: var(--neon-color); border: 2px solid var(--neon-color); padding: 0.5rem; }
+        .cyber-button { background-color: var(--neon-color); color: #0d0d0d; border: 2px solid var(--neon-color); font-weight: 700; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.1s; }
+        .cyber-button:hover { background-color: #0d0d0d; color: var(--neon-color); box-shadow: 0 0 8px rgba(250, 250, 250, 0.5); }
+    </style>
+</head>
+<body class="text-gray-200">
+
+    <header class="bg-black p-6 border-b-4 border-neon">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="../index.html" class="text-sm font-mono tracking-wider text-neon hover:text-gray-400 transition-colors">
+                ← /MAIN_INDEX
+            </a>
+            <span class="text-sm font-mono tracking-wider text-gray-500">
+                //HOMEWORK_04
+            </span>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 md:px-12 py-12">
+        <h1 class="text-5xl sm:text-6xl font-black uppercase mb-4 text-neon cyber-glow-text cyber-mono tracking-tight">
+            HOMEWORK 04
+        </h1>
+
+        <p class="text-lg font-mono mb-10 text-gray-500 border-b-2 border-gray-700 pb-4">Explore different measures of central tendency and test them with the calculator below.</p>
+
+        <section id="content" class="mb-12 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-3xl font-bold text-neon section-header cyber-mono">Measures of Central Tendency</h2>
+
+            <p class="text-gray-300 mb-4">This page covers the most common measures: arithmetic mean, median, mode, geometric mean, harmonic mean, weighted mean, midrange, trimmed mean, and winsorized mean. Use the interactive widget at the bottom to try your own data.</p>
+
+            <h3 class="text-2xl font-semibold text-neon mt-6">When to use each measure</h3>
+            <ul class="ml-6 text-gray-300">
+                <li><strong>Arithmetic mean</strong>: good for symmetric distributions without strong outliers.</li>
+                <li><strong>Median</strong>: robust to outliers and skewed distributions.</li>
+                <li><strong>Mode</strong>: best for categorical data or to find the most frequent value.</li>
+                <li><strong>Geometric mean</strong>: for multiplicative processes (growth rates); requires positive values.</li>
+                <li><strong>Harmonic mean</strong>: for averages of rates (e.g., average speed over equal distances); sensitive to small values.</li>
+                <li><strong>Trimmed / Winsorized</strong>: robust alternatives that reduce the influence of outliers.</li>
+            </ul>
+
+            <h3 class="text-2xl font-semibold text-neon mt-6">Examples</h3>
+            <ol class="ml-6 text-gray-300">
+                <li><strong>Symmetric</strong>: [1, 2, 3, 4, 5] — mean = 3, median = 3.</li>
+                <li><strong>Skewed with outlier</strong>: [1, 2, 2, 3, 100] — mean ≈ 21.6 (inflated by the outlier), median = 2 (more representative).</li>
+                <li><strong>Multiplicative</strong>: [1.1, 1.2, 0.9] — geometric mean better represents typical multiplicative change.</li>
+            </ol>
+
+            <hr class="my-6 border-gray-700">
+
+            <h3 class="text-2xl font-semibold text-neon mt-6">Interactive calculator</h3>
+            <p class="text-gray-300 mb-2">Enter numbers separated by commas, semicolons or spaces, or pick an example and click <em>Compute</em>.</p>
+
+            <div class="mb-4">
+                <select id="exampleSelect" class="cyber-input mr-2">
+                    <option value="">-- Load example --</option>
+                    <option value="1,2,3,4,5">Symmetric: 1,2,3,4,5</option>
+                    <option value="1,2,2,3,100">Skewed w/ outlier: 1,2,2,3,100</option>
+                    <option value="1.1,1.2,0.9">Multiplicative: 1.1,1.2,0.9</option>
+                    <option value="10,20,30,40,50,60,70">Range: 10..70</option>
+                </select>
+                <input id="dataInput" class="cyber-input w-96" placeholder="e.g. 1, 2, 2, 3, 100 or 1;2;3 or 1 2 3">
+                <button id="computeBtn" class="cyber-button ml-2">Compute</button>
+            </div>
+
+            <div id="results" class="text-gray-200 bg-gray-800 p-4 rounded-md code-block-brutal"></div>
+        </section>
+
+    <script>
+        // Utility functions for central tendency calculations
+        function parseData(s){
+            if(!s) return [];
+            // Split on comma, semicolon or whitespace
+            const tokens = s.split(/[;,\s]+/).map(t=>t.trim()).filter(t=>t!=='');
+            const out = [];
+            for(let tok of tokens){
+                // Allow decimal comma: if token contains ',' but no dot, convert to dot
+                if(tok.includes(',') && !tok.includes('.')) tok = tok.replace(',', '.');
+                const n = Number(tok);
+                if(!isNaN(n)) out.push(n);
+            }
+            return out;
+        }
+
+        function mean(arr){ if(arr.length===0) return NaN; return arr.reduce((a,b)=>a+b,0)/arr.length; }
+        function median(arr){ if(arr.length===0) return NaN; const a=[...arr].sort((x,y)=>x-y); const m=Math.floor((a.length-1)/2); return a.length%2? a[m] : (a[m]+a[m+1])/2; }
+        function mode(arr){ if(arr.length===0) return []; const f={}; for(const v of arr) f[v]=(f[v]||0)+1; let max=0; for(const k in f) if(f[k]>max) max=f[k]; const modes=Object.keys(f).filter(k=>f[k]===max).map(Number); if(modes.length===Object.keys(f).length) return []; return modes; }
+        function geometricMean(arr){ if(arr.length===0) return NaN; if(arr.some(x=>x<=0)) return NaN; return Math.exp(arr.reduce((s,x)=>s+Math.log(x),0)/arr.length); }
+        function harmonicMean(arr){ if(arr.length===0) return NaN; if(arr.some(x=>x<=0)) return NaN; return arr.length / arr.reduce((s,x)=>s+1/x,0); }
+        function midrange(arr){ if(arr.length===0) return NaN; return (Math.min(...arr) + Math.max(...arr))/2; }
+        function trimmedMean(arr, prop=0.1){ if(arr.length===0) return NaN; const a=[...arr].sort((x,y)=>x-y); const k=Math.floor(a.length*prop); const t=a.slice(k,a.length-k); return t.length? mean(t): NaN; }
+        function winsorizedMean(arr, prop=0.1){ if(arr.length===0) return NaN; const a=[...arr].sort((x,y)=>x-y); const k=Math.floor(a.length*prop); for(let i=0;i<k;i++) a[i]=a[k]; for(let i=a.length-1;i>=a.length-k;i--) a[i]=a[a.length-k-1]; return mean(a); }
+
+        document.getElementById('exampleSelect').addEventListener('change', function(e){ if(e.target.value) document.getElementById('dataInput').value = e.target.value; });
+        document.getElementById('computeBtn').addEventListener('click', function(){
+            const raw = document.getElementById('dataInput').value;
+            const data = parseData(raw);
+            const out = document.getElementById('results');
+            if(data.length===0){ out.innerHTML = '<div class="text-red-400">No valid data entered.</div>'; return; }
+
+            const arithmetic = mean(data);
+            const med = median(data);
+            const modes = mode(data);
+            const geom = geometricMean(data);
+            const harm = harmonicMean(data);
+            const mid = midrange(data);
+            const t10 = trimmedMean(data, 0.1);
+            const w10 = winsorizedMean(data, 0.1);
+
+            out.innerHTML = `
+                <div><strong>Data</strong>: [${data.join(', ')}] (n=${data.length})</div>
+                <div><strong>Arithmetic mean</strong>: ${Number.isFinite(arithmetic)?arithmetic.toFixed(6):'N/A'}</div>
+                <div><strong>Median</strong>: ${Number.isFinite(med)?med.toFixed(6):'N/A'}</div>
+                <div><strong>Mode</strong>: ${modes.length>0?modes.join(', '):'none (all unique)'}</div>
+                <div><strong>Geometric mean</strong>: ${Number.isFinite(geom)?geom.toFixed(6):'N/A (requires all values > 0)'}</div>
+                <div><strong>Harmonic mean</strong>: ${Number.isFinite(harm)?harm.toFixed(6):'N/A (requires all values > 0)'}</div>
+                <div><strong>Midrange</strong>: ${Number.isFinite(mid)?mid.toFixed(6):'N/A'}</div>
+                <div><strong>Trimmed mean (10%)</strong>: ${Number.isFinite(t10)?t10.toFixed(6):'N/A'}</div>
+                <div><strong>Winsorized mean (10%)</strong>: ${Number.isFinite(w10)?w10.toFixed(6):'N/A'}</div>
+            `;
+
+            let recommendation = '';
+            if(Number.isFinite(arithmetic) && Number.isFinite(med)){
+                const meanVsMedian = Math.abs(arithmetic - med);
+                if(meanVsMedian / (Math.abs(med)||1) > 0.2) recommendation += '<div class="mt-2 text-yellow-300">Mean and median differ substantially: data may be skewed or contain outliers — consider median or trimmed/winsorized mean.</div>';
+            }
+            if(!Number.isFinite(geom) && data.some(x=>x<=0)) recommendation += '<div class="mt-2 text-yellow-300">Geometric mean is not defined for values ≤ 0.</div>';
+            if(recommendation) out.innerHTML += recommendation;
+        });
+    </script>
+
+    </main>
+
+</body>
+</html>
