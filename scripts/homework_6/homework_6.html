@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homework 5 - Online (recurrence) formulas for mean & variance</title>
+    <title>Homework 6 - Online (recurrence) formulas for mean & variance</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900;200&display=swap');
@@ -38,25 +38,15 @@
         <section class="mb-8 p-6 bg-gray-900/50 brutal-border">
             <h2 class="text-2xl font-bold text-neon section-header cyber-mono">1) Incremental (online) mean — derivation</h2>
             <p class="text-gray-300">Let x_1, x_2, ..., x_n be observations. The arithmetic mean after n observations is</p>
-            <div class="code-block cyber-mono">
-                M_n = (1/n) * \sum_{i=1}^n x_i
-            </div>
+            <div class="code-block cyber-mono">M_n = (1/n) * \sum_{i=1}^n x_i</div>
             <p class="text-gray-300">We can express M_n from M_{n-1} and the new value x_n:</p>
-            <div class="code-block cyber-mono">
-                M_{n-1} = (1/(n-1)) * \sum_{i=1}^{n-1} x_i
-            </div>
+            <div class="code-block cyber-mono">M_{n-1} = (1/(n-1)) * \sum_{i=1}^{n-1} x_i</div>
             <p class="text-gray-300">Multiply M_{n-1} by (n-1) and add x_n:</p>
-            <div class="code-block cyber-mono">
-                (n-1)M_{n-1} + x_n = \sum_{i=1}^{n} x_i
-            </div>
+            <div class="code-block cyber-mono">(n-1)M_{n-1} + x_n = \sum_{i=1}^{n} x_i</div>
             <p class="text-gray-300">Divide by n:</p>
-            <div class="code-block cyber-mono">
-                M_n = \frac{(n-1)M_{n-1} + x_n}{n}
-            </div>
+            <div class="code-block cyber-mono">M_n = \frac{(n-1)M_{n-1} + x_n}{n}</div>
             <p class="text-gray-300">Rearranged into a common, numerically stable update form:</p>
-            <div class="code-block cyber-mono">
-                M_n = M_{n-1} + \frac{x_n - M_{n-1}}{n}
-            </div>
+            <div class="code-block cyber-mono">M_n = M_{n-1} + \frac{x_n - M_{n-1}}{n}</div>
             <p class="text-gray-300">Intuition: adjust the previous mean by a fraction (1/n) of the difference between the new value and the previous mean.</p>
         </section>
 
@@ -64,24 +54,9 @@
             <h2 class="text-2xl font-bold text-neon section-header cyber-mono">2) Incremental variance — derivation (Welford's method)</h2>
             <p class="text-gray-300">A stable online algorithm keeps a running mean M_n and a running sum-of-squares-of-differences, called <code>M2</code> (not to confuse with mean).</p>
             <p class="text-gray-300">For the nth value x_n, define:</p>
-            <div class="code-block cyber-mono">
-                delta = x_n - M_{n-1}
-                <br>
-                M_n = M_{n-1} + delta / n
-                <br>
-                M2_n = M2_{n-1} + delta * (x_n - M_n)
-            </div>
-            <p class="text-gray-300">Why this works (brief algebra):</p>
-            <p class="text-gray-300">Starting from definition of population sum of squared deviations:</p>
-            <div class="code-block cyber-mono">
-                M2_n = \sum_{i=1}^n (x_i - M_n)^2
-            </div>
-            <p class="text-gray-300">Expanding and manipulating yields the recurrence above; the key is using delta and the updated mean M_n in the product delta*(x_n - M_n) so the incremental contribution is exact and numerically stable.</p>
+            <div class="code-block cyber-mono">delta = x_n - M_{n-1}<br>M_n = M_{n-1} + delta / n<br>M2_n = M2_{n-1} + delta * (x_n - M_n)</div>
             <p class="text-gray-300">From M2 you get variance estimates:</p>
-            <ul class="text-gray-300 ml-6">
-                <li>Population variance: sigma^2 = M2_n / n</li>
-                <li>Sample variance (unbiased): s^2 = M2_n / (n - 1) &nbsp;(for n &gt; 1)</li>
-            </ul>
+            <ul class="text-gray-300 ml-6"><li>Population variance: sigma^2 = M2_n / n</li><li>Sample variance (unbiased): s^2 = M2_n / (n - 1) &nbsp;(for n &gt; 1)</li></ul>
         </section>
 
         <section class="mb-8 p-6 bg-gray-900/50 brutal-border">
@@ -100,18 +75,15 @@
                     const out = [];
                     let n = 0;
                     let mean = 0;
-                    let M2 = 0; // sum of squares of differences from the current mean
-
+                    let M2 = 0;
                     for(const x of arr){
                         n += 1;
                         const delta = x - mean;
                         mean = mean + delta / n;
                         const delta2 = x - mean;
-                        M2 = M2 + delta * delta2; // equals sum (x - mean)^2
-
+                        M2 = M2 + delta * delta2;
                         const sampleVar = n > 1 ? M2 / (n - 1) : 0;
                         const popVar = M2 / n;
-
                         out.push({n, x, mean, M2, sampleVar, popVar});
                     }
                     return out;
@@ -124,13 +96,8 @@
                     const seq = incrementalStats(arr);
                     const o = document.getElementById('output');
                     o.innerHTML = '';
-                    for(const s of seq){
-                        o.innerHTML += `<div>n=${s.n}, x=${s.x}, mean=${s.mean.toFixed(6)}, M2=${s.M2.toFixed(6)}, sampleVar=${s.sampleVar.toFixed(6)}</div>`;
-                    }
-                    if(seq.length>0){
-                        const last = seq[seq.length-1];
-                        o.innerHTML += `<hr><div><strong>Final (n=${last.n}):</strong> mean=${last.mean.toFixed(6)}, sample variance=${last.sampleVar.toFixed(6)}, population variance=${last.popVar.toFixed(6)}</div>`;
-                    }
+                    for(const s of seq){ o.innerHTML += `<div>n=${s.n}, x=${s.x}, mean=${s.mean.toFixed(6)}, M2=${s.M2.toFixed(6)}, sampleVar=${s.sampleVar.toFixed(6)}</div>`; }
+                    if(seq.length>0){ const last = seq[seq.length-1]; o.innerHTML += `<hr><div><strong>Final (n=${last.n}):</strong> mean=${last.mean.toFixed(6)}, sample variance=${last.sampleVar.toFixed(6)}, population variance=${last.popVar.toFixed(6)}</div>`; }
                 });
             </script>
 
