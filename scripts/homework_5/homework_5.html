@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homework 5 - Measures of Central Tendency</title>
+    <title>Understanding Averages: which measure of location is best?</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Load Chart.js if needed later -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
@@ -30,35 +30,55 @@
     <header class="bg-black p-6 border-b-4 border-neon">
         <div class="container mx-auto flex justify-between items-center">
             <a href="../index.html" class="text-sm font-mono tracking-wider text-neon hover:text-gray-400 transition-colors">← /MAIN_INDEX</a>
-            <span class="text-sm font-mono tracking-wider text-gray-500">//HOMEWORK_04</span>
+            <span class="text-sm font-mono tracking-wider text-gray-500">//UNDERSTANDING_AVERAGES</span>
         </div>
     </header>
 
     <main class="container mx-auto px-6 md:px-12 py-12">
-        <h1 class="text-5xl sm:text-6xl font-black uppercase mb-4 text-neon cyber-glow-text cyber-mono tracking-tight">HOMEWORK 04</h1>
+        <h1 class="text-4xl sm:text-4xl font-black mb-4 text-neon cyber-glow-text cyber-mono tracking-tight">Understanding Averages: which measure of location is best?</h1>
 
-        <p class="text-lg font-mono mb-10 text-gray-500 border-b-2 border-gray-700 pb-4">Explore different measures of central tendency and test them with the calculator below.</p>
+        <p class="text-lg font-mono mb-8 text-gray-300">Averages (measures of location) summarize a dataset by a single representative value. Different averages capture different notions of "typical". Below we give concise theory for the most common measures and discuss when each is preferable.</p>
 
         <section id="content" class="mb-12 p-6 bg-gray-900/50 brutal-border">
-            <h2 class="text-3xl font-bold text-neon section-header cyber-mono">Measures of Central Tendency</h2>
+            <h2 class="text-3xl font-bold text-neon section-header cyber-mono">Short theory and comparison</h2>
 
-            <p class="text-gray-300 mb-4">This page covers the most common measures: arithmetic mean, median, mode, geometric mean, harmonic mean, weighted mean, midrange, trimmed mean, and winsorized mean. Use the interactive widget at the bottom to try your own data.</p>
+            <h3 class="text-xl font-semibold text-neon mt-4">Arithmetic mean</h3>
+            <p class="text-gray-300">Definition: the sum of observations divided by n. Formula: <code class="cyber-mono">mean = (1/n) &sum; x_i</code>.
+            The arithmetic mean is the best estimator of the central location under the squared-error loss (it minimizes the sum of squared deviations). It is efficient for symmetric, light-tailed distributions (e.g., Gaussian). However, it is sensitive to outliers and skew: a single large value can move the mean far from the bulk of the data.</p>
 
-            <h3 class="text-2xl font-semibold text-neon mt-6">When to use each measure</h3>
+            <h3 class="text-xl font-semibold text-neon mt-4">Median</h3>
+            <p class="text-gray-300">Definition: the middle value in the sorted data (or average of two middle values). The median minimizes the sum of absolute deviations and is robust to outliers and skew. When data are heavy-tailed or contaminated, the median often represents a better notion of typical than the mean. In terms of theoretical optimality, the median is the L1-location estimator and has a breakdown point of 50% (very robust).</p>
+
+            <h3 class="text-xl font-semibold text-neon mt-4">Mode</h3>
+            <p class="text-gray-300">Definition: the most frequent value. Useful for categorical data or multimodal distributions where the most common category/value matters. For continuous data, the mode can be estimated via density estimation; it represents the point of highest density rather than a center under a simple loss function.</p>
+
+            <h3 class="text-xl font-semibold text-neon mt-4">Geometric mean</h3>
+            <p class="text-gray-300">Definition: the nth root of the product of positive observations. Formula: <code class="cyber-mono">GM = (Π x_i)^{1/n}</code>. The geometric mean is the natural average for multiplicative processes (growth factors, returns). It is appropriate when observations combine multiplicatively and requires positive values. The geometric mean corresponds to the arithmetic mean of log-values.</p>
+
+            <h3 class="text-xl font-semibold text-neon mt-4">Harmonic mean</h3>
+            <p class="text-gray-300">Definition: the reciprocal of the arithmetic mean of reciprocals. Formula: <code class="cyber-mono">HM = n / Σ (1/x_i)</code>. The harmonic mean is appropriate for averaging rates (e.g., average speed when distances are equal). It is heavily influenced by small values and requires positive inputs.</p>
+
+            <h3 class="text-xl font-semibold text-neon mt-4">Trimmed / Winsorized means and weighted means</h3>
+            <p class="text-gray-300">Trimmed means discard extreme values (a fixed proportion at each tail) before computing the arithmetic mean; Winsorized replaces extreme values with the nearest remaining value. Both are simple robust alternatives to the mean that retain interpretability. Weighted means assign different importance (weights) to observations and are optimal when data points have unequal reliability or represent different-sized groups.</p>
+
+            <h3 class="text-xl font-semibold text-neon mt-4">Which is best?</h3>
+            <p class="text-gray-300">There is no single "best" average for all problems. Theoretical optimality depends on the loss function and the data-generating process:</p>
             <ul class="ml-6 text-gray-300">
-                <li><strong>Arithmetic mean</strong>: good for symmetric distributions without strong outliers.</li>
-                <li><strong>Median</strong>: robust to outliers and skewed distributions.</li>
-                <li><strong>Mode</strong>: best for categorical data or to find the most frequent value.</li>
-                <li><strong>Geometric mean</strong>: for multiplicative processes (growth rates); requires positive values.</li>
-                <li><strong>Harmonic mean</strong>: for averages of rates (e.g., average speed over equal distances); sensitive to small values.</li>
-                <li><strong>Trimmed / Winsorized</strong>: robust alternatives that reduce the influence of outliers.</li>
+                <li>If errors are measured in squared error and data are light-tailed, the <strong>arithmetic mean</strong> is optimal.</li>
+                <li>If robustness to outliers or heavy tails matters, prefer the <strong>median</strong> or a trimmed mean.</li>
+                <li>For multiplicative growth, use the <strong>geometric mean</strong>.</li>
+                <li>For averaging rates, use the <strong>harmonic mean</strong>.</li>
+                <li>For categorical or multimodal data, the <strong>mode</strong> (or modes) is most informative.</li>
+                <li>If observations have different importance, use a <strong>weighted mean</strong> with appropriate weights.</li>
             </ul>
 
-            <h3 class="text-2xl font-semibold text-neon mt-6">Examples</h3>
+            <p class="text-gray-300">In short: pick the measure that matches your loss function and the data context. When in doubt, report multiple measures (mean, median, and a robust alternative) and visualize the distribution.</p>
+
+            <h3 class="text-2xl font-semibold text-neon mt-6">Examples (quick intuition)</h3>
             <ol class="ml-6 text-gray-300">
-                <li><strong>Symmetric</strong>: [1, 2, 3, 4, 5] — mean = 3, median = 3.</li>
-                <li><strong>Skewed with outlier</strong>: [1, 2, 2, 3, 100] — mean ≈ 21.6 (inflated by the outlier), median = 2 (more representative).</li>
-                <li><strong>Multiplicative</strong>: [1.1, 1.2, 0.9] — geometric mean better represents typical multiplicative change.</li>
+                <li><strong>Symmetric</strong>: [1, 2, 3, 4, 5] — mean = 3, median = 3: both agree.</li>
+                <li><strong>Skewed with outlier</strong>: [1, 2, 2, 3, 100] — mean ≈ 21.6 (inflated), median = 2 (robust).</li>
+                <li><strong>Multiplicative</strong>: [1.1, 1.2, 0.9] — geometric mean better summarizes multiplicative change.</li>
             </ol>
 
             <hr class="my-6 border-gray-700">

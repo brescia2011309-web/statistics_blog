@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homework 6 - Online (recurrence) formulas for mean & variance</title>
+    <title>Online Algorithms: Recurrence formulas for mean and variance</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900;200&display=swap');
@@ -23,12 +23,12 @@
     <header class="bg-black p-6 border-b-4 border-neon">
         <div class="container mx-auto flex justify-between items-center">
             <a href="../index.html" class="text-sm font-mono tracking-wider text-neon hover:text-gray-400 transition-colors">← /MAIN_INDEX</a>
-            <span class="text-sm font-mono tracking-wider text-gray-500">//HOMEWORK_05</span>
+            <span class="text-sm font-mono tracking-wider text-gray-500">//ONLINE_ALGORITHMS</span>
         </div>
     </header>
 
     <main class="container mx-auto px-6 md:px-12 py-12">
-        <h1 class="text-4xl font-black uppercase mb-4 text-neon cyber-mono tracking-tight">Homework 5 — Recurrence formulas for mean & variance</h1>
+    <h1 class="text-4xl font-black uppercase mb-4 text-neon cyber-mono tracking-tight">Online Algorithms: Recurrence formulas for mean and variance</h1>
 
         <section class="mb-8 p-6 bg-gray-900/50 brutal-border">
             <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Goal</h2>
@@ -57,6 +57,13 @@
             <div class="code-block cyber-mono">delta = x_n - M_{n-1}<br>M_n = M_{n-1} + delta / n<br>M2_n = M2_{n-1} + delta * (x_n - M_n)</div>
             <p class="text-gray-300">From M2 you get variance estimates:</p>
             <ul class="text-gray-300 ml-6"><li>Population variance: sigma^2 = M2_n / n</li><li>Sample variance (unbiased): s^2 = M2_n / (n - 1) &nbsp;(for n &gt; 1)</li></ul>
+        </section>
+
+        <section class="mb-8 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Why online algorithms matter</h2>
+            <p class="text-gray-300">Online (one-pass) algorithms update statistics incrementally as each new observation arrives. They are essential when data arrive as a stream, when the dataset is too large to fit into memory, or when you need low-latency updates. Online updates require O(1) memory (constant extra space) and O(1) time per observation, making them efficient for real-time analytics.</p>
+            <p class="text-gray-300">Numerical stability is a critical concern: naive formulas that compute variance as E[X^2] - (E[X])^2 can suffer catastrophic cancellation when sums are large and differences are small. Welford's method avoids this by keeping a running centered sum (M2), which prevents loss of precision and produces accurate results even for long streams.</p>
+            <p class="text-gray-300">Use cases: telemetry and monitoring, finance (streaming returns), online learning, sensor networks, and any situation where summaries must be computed on-the-fly without storing the full dataset.</p>
         </section>
 
         <section class="mb-8 p-6 bg-gray-900/50 brutal-border">
