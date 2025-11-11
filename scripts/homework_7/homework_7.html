@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Security Random Walk — Binomial convergence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900;200&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #0d0d0d; color: #e5e7eb; }
+        :root { --neon-color: #FAFAFA; --accent-color: #00FFC2; }
+        .brutal-border { border: 4px solid var(--neon-color); transition: all 0.15s ease-out; }
+        .brutal-border:hover { transform: translate(-3px, -3px); box-shadow: 3px 3px 0 var(--neon-color), 0 0 8px rgba(250,250,250,0.3); }
+        .cyber-mono { font-family: monospace; }
+        .text-neon { color: var(--neon-color); }
+        .section-header { border-left: 8px solid var(--neon-color); padding-left: 1rem; margin-bottom: 1.5rem; }
+        .code-block { background: #111827; padding: 1rem; border: 2px solid var(--neon-color); overflow-x: auto; }
+        .cyber-input { background-color: #1f2937; color: var(--neon-color); border: 2px solid var(--neon-color); padding: 0.5rem; }
+        .cyber-button { background-color: var(--neon-color); color: #0d0d0d; border: 2px solid var(--neon-color); padding: 0.5rem 1rem; font-weight:700; }
+    </style>
+</head>
+<body class="text-gray-200">
+    <header class="bg-black p-6 border-b-4 border-neon">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="../index.html" class="text-sm font-mono tracking-wider text-neon hover:text-gray-400 transition-colors">← /MAIN_INDEX</a>
+            <span class="text-sm font-mono tracking-wider text-gray-500">//RANDOM_WALK_SECURITY</span>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 md:px-12 py-12">
+        <h1 class="text-4xl font-black uppercase mb-4 text-neon cyber-mono tracking-tight">Server Security Random Walk — Binomial convergence</h1>
+
+        <section class="mb-8 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Problem statement</h2>
+            <p class="text-gray-300">A server receives weekly updates for <strong>n</strong> weeks. Each week, there are <strong>m</strong> independent simulated trajectories (runs) of attackers, and a breach can occur with probability <strong>p</strong> in a given week. For each week in a trajectory: assign <span class="text-lime-400">+1</span> if the server remains secure that week (no breach) and <span class="text-red-400">-1</span> if it is breached. The cumulative score after n weeks is the sum of weekly +1/-1 values.</p>
+            <p class="text-gray-300">This maps to a random walk: each week is a step +1 with probability 1-p (secure) and -1 with probability p (breach). If S is the number of secure weeks, then the score is <code class="cyber-mono">score = 2*S - n</code>. Since S ~ Binomial(n, 1-p), the distribution of scores is a shifted/scaled binomial. We'll simulate many trajectories, count how many trajectories reach each possible total score, and compare simulated frequencies to the theoretical binomial probabilities as n and m increase.</p>
+        </section>
+
+        <section class="mb-8 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Simulation controls</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                <div>
+                    <label class="text-xs text-gray-400">Weeks (n)</label>
+                    <input id="weeksN" type="number" min="1" max="1000" value="20" class="cyber-input w-full" />
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400">Trajectories (m)</label>
+                    <input id="trajsM" type="number" min="1" max="200000" value="2000" class="cyber-input w-full" />
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400">Breach probability (p)</label>
+                    <input id="probP" type="number" step="0.01" min="0" max="1" value="0.1" class="cyber-input w-full" />
+                </div>
+                <div class="flex items-end">
+                    <button id="runSim" class="cyber-button w-full">Run simulation</button>
+                </div>
+            </div>
+
+            <div class="text-gray-400 text-sm mb-2">Max trajectories recommended: 100,000 (large m may take time). Charts show normalized frequency (probability mass).</div>
+        </section>
+
+        <section class="mb-8 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Results</h2>
+
+            <div id="summary" class="mb-4 text-gray-300"></div>
+
+            <div class="code-block mb-4">
+                <canvas id="histChart" height="160"></canvas>
+            </div>
+
+            <div id="tableOut" class="text-gray-300"></div>
+        </section>
+
+        <section class="mb-8 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Theory (brief)</h2>
+            <p class="text-gray-300">If S ~ Binomial(n, q) with q = 1 - p (probability of being secure), then P(S = s) = C(n, s) q^s (1-q)^{n-s}. The possible scores are <code class="cyber-mono">score = 2*s - n</code>, for s=0..n. The theoretical probability mass for a given score x is P(S = (x + n)/2) when x has the same parity as n; otherwise the probability is zero.</p>
+            <p class="text-gray-300">As n grows, by the central limit theorem, the binomial distribution approaches a Gaussian with mean n*q and variance n*q*(1-q); in score-space this is a shifted and scaled Gaussian. Increasing the number of simulated trajectories m reduces Monte Carlo sampling noise and the simulated histogram should converge to the theoretical pmf.</p>
+        </section>
+
+    </main>
+
+    <script>
+        // Utility: binomial coefficient (n choose k) - iterative to avoid large factorials
+        function nCr(n, r){
+            if(r < 0 || r > n) return 0;
+            r = Math.min(r, n - r);
+            let num = 1, den = 1;
+            for(let i=1; i<=r; i++){
+                num *= (n - (r - i));
+                den *= i;
+            }
+            return num / den;
+        }
+
+        // Binomial PMF for s successes with parameters n, q
+        function binomPmf(n, s, q){
+            if(s < 0 || s > n) return 0;
+            return nCr(n, s) * Math.pow(q, s) * Math.pow(1 - q, n - s);
+        }
+
+        // Simulate m trajectories, each of length n, breach prob p (breach -> -1, secure -> +1)
+        function simulate(n, m, p){
+            const q = 1 - p; // prob secure
+            // We'll accumulate counts for S (number of secure weeks)
+            const countsS = new Array(n+1).fill(0);
+
+            for(let i=0;i<m;i++){
+                // For speed, simulate binomial directly using Bernoulli trials across n
+                let s = 0;
+                for(let j=0;j<n;j++){
+                    if(Math.random() < q) s++;
+                }
+                countsS[s]++;
+            }
+            return countsS;
+        }
+
+        // Convert countsS to score counts and normalized probabilities
+        function countsSToScore(countsS){
+            const n = countsS.length - 1;
+            const scoreMap = {}; // score -> count
+            for(let s=0; s<=n; s++){
+                const score = 2*s - n; // maps s->score
+                scoreMap[score] = (scoreMap[score] || 0) + countsS[s];
+            }
+            return scoreMap;
+        }
+
+        // Build arrays for chart: labels (scores sorted), simProbs, theoryProbs
+        function buildSeries(countsS, n, m, p){
+            const q = 1 - p;
+            const scores = [];
+            const simProbs = [];
+            const theoryProbs = [];
+
+            // possible scores from -n to +n step 2
+            for(let s=0; s<=n; s++){
+                const score = 2*s - n;
+                scores.push(score);
+                simProbs.push((countsS[s] || 0) / m);
+                theoryProbs.push(binomPmf(n, s, q));
+            }
+            return {scores, simProbs, theoryProbs};
+        }
+
+        // Chart instance
+        let histChart = null;
+
+        function renderChart(labels, simData, theoryData){
+            const ctx = document.getElementById('histChart').getContext('2d');
+            if(histChart) histChart.destroy();
+
+            histChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels.map(l=>String(l)),
+                    datasets: [
+                        {
+                            type: 'bar',
+                            label: 'Simulated (probability)',
+                            data: simData,
+                            backgroundColor: 'rgba(0, 255, 194, 0.6)',
+                            borderColor: 'rgba(0, 255, 194, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            type: 'line',
+                            label: 'Theoretical (binomial pmf)',
+                            data: theoryData,
+                            borderColor: 'rgba(250,250,250,0.9)',
+                            borderWidth: 2,
+                            tension: 0.1,
+                            pointRadius: 4,
+                            fill: false,
+                            yAxisID: 'y'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    interaction: { mode: 'index', intersect: false },
+                    scales: {
+                        x: { ticks: { color: '#9ca3af' }, grid: { color: '#111827' } },
+                        y: { beginAtZero: true, title: { display: true, text: 'Probability' }, ticks: { color: '#9ca3af' }, grid: { color: '#111827' } }
+                    },
+                    plugins: { legend: { labels: { color: 'var(--neon-color)' } } }
+                }
+            });
+        }
+
+        // Compute L1 error (total variation distance) between sim and theory
+        function totalVariation(sim, theory){
+            let s = 0;
+            for(let i=0;i<sim.length;i++) s += Math.abs(sim[i] - theory[i]);
+            return 0.5 * s; // total variation
+        }
+
+        document.getElementById('runSim').addEventListener('click', ()=>{
+            const n = parseInt(document.getElementById('weeksN').value, 10);
+            let m = parseInt(document.getElementById('trajsM').value, 10);
+            const p = parseFloat(document.getElementById('probP').value);
+            if(isNaN(n) || n < 1) { alert('n must be integer >= 1'); return; }
+            if(isNaN(m) || m < 1) { alert('m must be integer >= 1'); return; }
+            if(isNaN(p) || p < 0 || p > 1) { alert('p must be in [0,1]'); return; }
+
+            // Cap m to avoid locking the browser if user chooses huge m
+            const MAX_M = 200000;
+            if(m > MAX_M){ if(!confirm(`You've chosen m=${m}, which may be slow. Continue and cap to ${MAX_M}?`)) return; m = MAX_M; }
+
+            // Run simulation (counts for S)
+            const t0 = performance.now();
+            const countsS = simulate(n, m, p);
+            const t1 = performance.now();
+
+            const series = buildSeries(countsS, n, m, p);
+
+            // Render chart
+            renderChart(series.scores, series.simProbs, series.theoryProbs);
+
+            // Summary and table
+            const tv = totalVariation(series.simProbs, series.theoryProbs);
+            const meanS = series.scores.reduce((acc, score, i) => acc + ( (score + n)/2 ) * series.simProbs[i], 0); // mean of S via mapping
+            const expectedS = n * (1 - p);
+
+            document.getElementById('summary').innerHTML = `
+                <div class="mb-2 p-3 bg-gray-800/60 border border-gray-700">
+                    <div><strong>n (weeks)</strong>: <span class="text-lime-400">${n}</span></div>
+                    <div><strong>m (trajectories)</strong>: <span class="text-lime-400">${m}</span></div>
+                    <div><strong>p (breach probability)</strong>: <span class="text-lime-400">${p}</span></div>
+                    <div><strong>Sim time</strong>: <span class="text-cyan-400">${(t1-t0).toFixed(1)} ms</span></div>
+                    <div><strong>Total variation (sim vs theory)</strong>: <span class="text-yellow-300">${tv.toFixed(4)}</span></div>
+                    <div><strong>Expected secure weeks (n*(1-p))</strong>: <span class="text-lime-400">${expectedS.toFixed(3)}</span></div>
+                </div>
+            `;
+
+            // Build table of score, simulated count, sim prob, theory prob
+            let tableHtml = '<table class="w-full text-sm"><thead><tr class="text-left text-gray-400"><th>Score</th><th>Secure weeks (s)</th><th>Count</th><th>Sim P</th><th>Theory P</th></tr></thead><tbody>';
+            for(let i=0;i<series.scores.length;i++){
+                const score = series.scores[i];
+                const s = (score + n)/2;
+                tableHtml += `<tr><td class="text-neon">${score}</td><td>${s}</td><td>${(countsS[s]||0)}</td><td>${series.simProbs[i].toFixed(4)}</td><td>${series.theoryProbs[i].toFixed(4)}</td></tr>`;
+            }
+            tableHtml += '</tbody></table>';
+            document.getElementById('tableOut').innerHTML = tableHtml;
+
+        });
+
+    </script>
+</body>
+</html>

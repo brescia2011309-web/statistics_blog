@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Connections: Bernoulli LLN ↔ Random-walk / Binomial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900;200&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #0d0d0d; color: #e5e7eb; }
+        :root { --neon-color: #FAFAFA; --accent-color: #00FFC2; }
+        .brutal-border { border: 4px solid var(--neon-color); transition: all 0.15s ease-out; }
+        .brutal-border:hover { transform: translate(-3px, -3px); box-shadow: 3px 3px 0 var(--neon-color), 0 0 8px rgba(250,250,250,0.3); }
+        .cyber-mono { font-family: monospace; }
+        .text-neon { color: var(--neon-color); }
+        .section-header { border-left: 8px solid var(--neon-color); padding-left: 1rem; margin-bottom: 1.5rem; }
+        .code-block { background: #111827; padding: 1rem; border: 2px solid var(--neon-color); overflow-x: auto; }
+    </style>
+</head>
+<body class="text-gray-200">
+    <header class="bg-black p-6 border-b-4 border-neon">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="../index.html" class="text-sm font-mono tracking-wider text-neon hover:text-gray-400 transition-colors">← /MAIN_INDEX</a>
+            <span class="text-sm font-mono tracking-wider text-gray-500">//CONNECTIONS_HOMEWORK</span>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 md:px-12 py-12">
+        <h1 class="text-4xl font-black uppercase mb-6 text-neon cyber-mono tracking-tight">Bernoulli LLN ↔ Random-walk & Binomial: connections and combinatorics</h1>
+
+        <section class="mb-8 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Overview</h2>
+            <p class="text-gray-300">Both homeworks (the LLN Bernoulli simulation and the server-security random-walk) stem from the same simple stochastic primitive: independent Bernoulli trials with success probability <code class="cyber-mono">q</code> (secure / success) and failure probability <code class="cyber-mono">p = 1 - q</code> (breach / failure). Although the experiments emphasize different observables — running averages in the LLN demo and endpoint counts / scores in the random-walk demo — they are mathematically two views of the same process. Below we highlight similarities, differences, and combinatorial structures (binomial coefficients, Pascal's triangle), and show how other integer sequences (like Fibonacci) can appear via combinatorial identities.</p>
+        </section>
+
+        <section class="mb-8 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Similarities and differences</h2>
+            <ul class="ml-6 text-gray-300">
+                <li><strong>Primitive trials</strong>: both use independent Bernoulli outcomes. If X_i are iid Bernoulli(q), then S_n = Σ_{i=1}^n X_i is binomial and the sample mean is \overline{X}_n = S_n / n.</li>
+                <li><strong>LLN viewpoint</strong>: focuses on the temporal convergence of \overline{X}_n to q as n increases (a pathwise statement). The LLN simulation plots running averages and emphasizes stability of the mean over time.</li>
+                <li><strong>Binomial/endpoint viewpoint</strong>: focuses on how many trajectories end at each possible total S_n (or score = 2S_n - n). This is a counting/statistics view: how many sequences (paths) produce the same endpoint?</li>
+                <li><strong>Empirical vs combinatorial</strong>: the LLN demo shows convergence of a single-run statistic (running average) to an expectation; the binomial demo uses many independent trajectories (Monte Carlo) to estimate the distribution of endpoints, which can also be computed exactly using combinatorics.</li>
+            </ul>
+        </section>
+
+        <section class="mb-8 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Binomial coefficients and Pascal's triangle</h2>
+            <p class="text-gray-300">The number of distinct sequences of length <code class="cyber-mono">n</code> with exactly <code class="cyber-mono">s</code> successes is the binomial coefficient <code class="cyber-mono">C(n,s)</code>. These coefficients appear as row <code class="cyber-mono">n</code> of Pascal's triangle and count lattice paths arriving at a given endpoint (or score). The theoretical probability P(S_n = s) equals <code class="cyber-mono">C(n,s) q^s (1-q)^{n-s}</code>.</p>
+
+            <div class="code-block cyber-mono">C(n,s) = n! / (s! (n-s)!)</div>
+
+            <p class="text-gray-300">When q = 1/2 the normalized row (C(n,s)/2^n) is exactly the distribution of S_n; for q ≠ 1/2 the binomial weights re-weight the combinatorial counts by powers of q and 1-q.</p>
+        </section>
+
+        <section class="mb-8 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Binomial expansion and algebraic viewpoint</h2>
+            <p class="text-gray-300">The binomial theorem states</p>
+            <div class="code-block cyber-mono">(a + b)^n = Σ_{s=0}^n C(n,s) a^s b^{n-s}</div>
+            <p class="text-gray-300">Setting <code class="cyber-mono">a = q</code> and <code class="cyber-mono">b = 1 - q</code> gives the binomial pmf terms and the identity that the probabilities sum to 1. From an algebraic perspective, Pascal's triangle provides the coefficients for this expansion and encodes the combinatorics of path counting.</p>
+        </section>
+
+        <section class="mb-8 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Random-walk / lattice path interpretation</h2>
+            <p class="text-gray-300">Viewing each success as a step +1 and each failure as -1 produces a simple symmetric/asymmetric random walk. Endpoints after n steps correspond to scores x = 2s - n. The count of paths that end at score x is C(n, (x + n)/2) when parity matches. This lattice-path viewpoint is useful when reasoning about reflection principles, ballot theorems, and first-passage events (how long until a breach occurs in a trajectory).</p>
+        </section>
+
+        <section class="mb-8 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Fibonacci and diagonal sums</h2>
+            <p class="text-gray-300">Fibonacci numbers are related to Pascal's triangle by summing entries along shallow diagonals. One combinatorial identity is:</p>
+            <div class="code-block cyber-mono">F_{n} = Σ_{k=0}^{⌊(n-1)/2⌋} C(n - k - 1, k)</div>
+            <p class="text-gray-300">This identity counts binary strings of length n-1 without consecutive ones — a problem different from Bernoulli trials but built from the same combinatorial ingredients (binomial coefficients). The connection shows how many classical integer sequences can be expressed using binomial coefficients and why Pascal's triangle is a central combinatorial object.</p>
+        </section>
+
+        <section class="mb-8 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Concrete small example</h2>
+            <p class="text-gray-300">Take n = 4; Pascal's row is: 1, 4, 6, 4, 1 corresponding to s = 0..4. If q = 0.75 then the probabilities are:</p>
+            <div class="code-block cyber-mono">P(S=0)=1*0.25^4 | P(S=1)=4*0.75*0.25^3 | P(S=2)=6*0.75^2*0.25^2 | ...</div>
+            <p class="text-gray-300">Mapping to scores: s=0..4 ↦ score=-4,-2,0,2,4. The central entry 6 counts the 6 sequences leading to score 0. In the LLN view the sample mean after 4 trials equals S/4 and would be one of {0, 0.25, 0.5, 0.75, 1}.</p>
+        </section>
+
+        <section class="mb-8 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Takeaways</h2>
+            <ul class="ml-6 text-gray-300">
+                <li>Both homeworks are different lenses on Bernoulli trials: LLN studies pathwise convergence of averages; the random-walk/binomial homework studies endpoint distributions and counting.</li>
+                <li>Binomial coefficients (Pascal) are the combinatorial backbone: they count how many paths lead to each endpoint and provide the coefficients in the binomial expansion.</li>
+                <li>Many integer sequences (Fibonacci, Catalan, etc.) can be expressed in terms of binomial sums or diagonal sums of Pascal's triangle — showing the wide reach of binomial coefficients across combinatorics.</li>
+                <li>Practically: run both experiments and compare — LLN shows a single-run stabilization; the binomial histogram and its convergence to the theoretical pmf show the law of large numbers in a distributional sense (averages concentrate and endpoint probabilities become predictable).</li>
+            </ul>
+        </section>
+
+    </main>
+</body>
+</html>
