@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Probability Interpretations & Measure-Theoretic Foundations</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900;200&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #0d0d0d; color: #e5e7eb; }
+        :root { --neon-color: #FAFAFA; --accent-color: #00FFC2; }
+        .brutal-border { border: 4px solid var(--neon-color); transition: all 0.15s ease-out; }
+        .brutal-border:hover { transform: translate(-3px, -3px); box-shadow: 3px 3px 0 var(--neon-color), 0 0 8px rgba(250,250,250,0.3); }
+        .cyber-mono { font-family: monospace; }
+        .text-neon { color: var(--neon-color); }
+        .section-header { border-left: 8px solid var(--neon-color); padding-left: 1rem; margin-bottom: 1.5rem; }
+        .code-block { background: #111827; padding: 1rem; border: 2px solid var(--neon-color); overflow-x: auto; }
+    </style>
+</head>
+<body class="text-gray-200">
+    <header class="bg-black p-6 border-b-4 border-neon">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="../index.html" class="text-sm font-mono tracking-wider text-neon hover:text-gray-400 transition-colors">← /MAIN_INDEX</a>
+            <span class="text-sm font-mono tracking-wider text-gray-500">//PROBABILITY_FOUNDATIONS</span>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 md:px-12 py-12">
+        <h1 class="text-4xl font-black uppercase mb-6 text-neon cyber-mono tracking-tight">Probability: interpretations, axioms, and measure-theoretic foundations</h1>
+
+        <section class="mb-8 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Main interpretations of probability</h2>
+            <ul class="ml-6 text-gray-300">
+                <li><strong>Classical (Laplace)</strong>: probability as the ratio of favourable to equally possible cases. Works well in symmetrical, finite settings (e.g., fair dice) but struggles when "equally possible" is unclear.</li>
+                <li><strong>Frequentist</strong>: probability is a long-run relative frequency: P(A) = lim_{n→∞} (count_A(n)/n) when the limit exists. This grounds probabilities empirically but is silent on single-case beliefs and priors.</li>
+                <li><strong>Bayesian (subjective)</strong>: probability quantifies degrees of belief conditional on information. Probabilities are updated by Bayes' rule as evidence accumulates. Bayesians treat probability axioms as coherence constraints for rational degrees of belief.</li>
+                <li><strong>Propensity / Physical</strong>: probability as a dispositional tendency of a physical setup (e.g., the propensity of a radioactive atom to decay in a given interval). Useful in physical explanations but harder to formalize mathematically.</li>
+                <li><strong>Geometric</strong>: probability defined by relative measure (length, area, volume) in a geometric sample space (e.g., Buffon's needle). This is an instance of the measure-theoretic view with a uniform measure.</li>
+            </ul>
+
+            <p class="text-gray-300 mt-4">These interpretations emphasize different uses: counting symmetry (classical), empirical frequencies (frequentist), rational belief (Bayesian), or physical tendencies (propensity). They can appear to conflict superficially. The Kolmogorov axiomatic framework provides a common mathematical language that accommodates all these views by treating probability as a measure on an event sigma-algebra; interpretation is then applied on top of the same formal structure.</p>
+        </section>
+
+        <section class="mb-8 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Axiomatic (Kolmogorov) approach — short summary</h2>
+            <p class="text-gray-300">Kolmogorov formalized probability as a triple <code class="cyber-mono">(Ω, F, P)</code> where:</p>
+            <ul class="ml-6 text-gray-300">
+                <li><code class="cyber-mono">Ω</code> is the sample space (set of outcomes).</li>
+                <li><code class="cyber-mono">F</code> is a sigma-algebra of subsets of <code>Ω</code> (the events) closed under countable unions and complements.</li>
+                <li><code class="cyber-mono">P: F → [0,1]</code> is a probability measure satisfying: <br> (1) P(A) ≥ 0 (non-negativity), <br> (2) P(Ω) = 1 (normalization), <br> (3) For disjoint A_i, P(∪ A_i) = Σ P(A_i) (countable additivity).</li>
+            </ul>
+
+            <p class="text-gray-300 mt-3">This framework is interpretation-agnostic: you can instantiate <code>Ω</code>, <code>F</code>, and <code>P</code> to model classical finite problems, long-run frequencies (via empirical measures), Bayesian beliefs (probability measures representing priors/posteriors), geometric probabilities (Lebesgue measure on subsets), or physics-driven propensities. The axioms ensure a consistent calculus of probability and resolve conceptual inconsistencies by requiring coherence (e.g., probabilities obey the same algebraic relations regardless of interpretation).</p>
+        </section>
+
+        <section class="mb-8 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Probability and measure theory</h2>
+            <p class="text-gray-300">Measure theory supplies the rigorous language: a probability is simply a measure with total mass 1. Key concepts:</p>
+            <ul class="ml-6 text-gray-300">
+                <li><strong>Sigma-algebra (σ-algebra)</strong>: a collection <code class="cyber-mono">F</code> of subsets of <code>Ω</code> containing Ω and closed under complementation and countable unions. This defines which sets (events) are measurable.</li>
+                <li><strong>Probability measure</strong>: a measure <code>P</code> on <code>(Ω,F)</code> with <code>P(Ω)=1</code>. All measure-theoretic results (monotone convergence, dominated convergence, Fubini, etc.) apply when integrating random variables.</li>
+                <li><strong>Measurable functions & random variables</strong>: a random variable <code>X</code> is a measurable map <code>X: Ω → ℝ</code>, meaning {ω: X(ω) ≤ x} ∈ F for every real x. This allows us to push the probability measure forward and define distributions and expectations as integrals: <code class="cyber-mono">E[X] = ∫ X dP</code> when integrable.</li>
+            </ul>
+
+            <p class="text-gray-300 mt-3">Thus probability theory is a special case of measure theory. Measure-theoretic foundations are essential for handling continuous distributions, conditional expectations, stochastic processes, and advanced results in probability (martingales, ergodic theorems, etc.).</p>
+        </section>
+
+        <section class="mb-8 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Derivations using the axioms: subadditivity</h2>
+            <p class="text-gray-300">Subadditivity states that for any countable collection of events <code>{A_i}</code>:</p>
+            <div class="code-block cyber-mono">P(⋃_{i=1}^∞ A_i) ≤ Σ_{i=1}^∞ P(A_i)</div>
+
+            <p class="text-gray-300">Proof (standard): Define disjoint sets by splitting the union into disjoint pieces: let <code>B_1 = A_1</code>, and for k ≥ 2 let <code>B_k = A_k \ (A_1 ∪ ... ∪ A_{k-1})</code>. The <code>B_k</code> are disjoint and ⋃ A_i = ⋃ B_k. By countable additivity,</p>
+            <div class="code-block cyber-mono">P(⋃ A_i) = Σ P(B_k)</div>
+            <p class="text-gray-300">But each <code>B_k ⊆ A_k</code> so by monotonicity <code>P(B_k) ≤ P(A_k)</code>. Summing gives the subadditivity inequality.</p>
+        </section>
+
+        <section class="mb-8 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Derivation: inclusion–exclusion principle</h2>
+            <p class="text-gray-300">The inclusion–exclusion principle expresses the probability of a finite union in terms of intersections. For two sets:</p>
+            <div class="code-block cyber-mono">P(A ∪ B) = P(A) + P(B) - P(A ∩ B)</div>
+
+            <p class="text-gray-300">Proof: Observe that A ∪ B = A ⊔ (B \ A) (disjoint union). Then P(A ∪ B) = P(A) + P(B \ A). But P(B \ A) = P(B) - P(B ∩ A) by partitioning B into (B ∩ A) and (B \ A). Rearranging yields the formula above.</p>
+
+            <p class="text-gray-300 mt-2">For three sets, the formula is:</p>
+            <div class="code-block cyber-mono">P(A ∪ B ∪ C) = P(A)+P(B)+P(C) - P(A∩B)-P(A∩C)-P(B∩C) + P(A∩B∩C)</div>
+
+            <p class="text-gray-300">The general inclusion–exclusion formula for <code>n</code> finite sets is:
+            </p>
+            <div class="code-block cyber-mono">P(⋃_{i=1}^n A_i) = Σ_{k=1}^n (-1)^{k+1} ( Σ_{1≤i1<...<ik≤n} P(A_{i1} ∩ ... ∩ A_{ik}) )</div>
+
+            <p class="text-gray-300">This follows by repeated application of additivity on partitions (or by induction). Intuitively, we alternate adding and subtracting intersections to correct for over-counting.</p>
+        </section>
+
+        <section class="mb-8 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Closing remarks</h2>
+            <p class="text-gray-300">The Kolmogorov axioms provide a unifying, rigorous backbone that reconciles the various philosophical interpretations: once you specify a probability measure on a measurable space, the rules of probability follow. Interpretations (frequentist, Bayesian, geometric, etc.) guide how to choose or interpret <code>P</code> in applications. Measure-theoretic language lets us extend and analyze probability beyond finite, symmetric, or count-based examples — it's the language for modern probability theory.</p>
+        </section>
+    </main>
+</body>
+</html>
