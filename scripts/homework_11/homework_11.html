@@ -105,45 +105,23 @@
         </section>
 
         <section class="mb-6 p-6 bg-gray-900/50 brutal-border">
-            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Results & theoretical discussion</h2>
-            <p class="text-gray-300">This section collects concise theoretical statements you can use to interpret the simulations and perform simple numerical diagnostics. The statements below are informal but state the exact distributions and asymptotic relations used as checks.</p>
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Interpretation of visual results</h2>
+            
 
-            <h3 class="text-neon mt-4">1) Endpoint law (exact)</h3>
-            <p class="text-gray-300">For an arithmetic Brownian motion defined by
-            <code class="cyber-mono">X(t) = X(0) + μ t + σ B(t)</code> (with B a standard Wiener process and X(0)=0 here), the distribution at fixed time T is Gaussian:</p>
-            <div class="code-block cyber-mono">X(T) ~ Normal( μ T,  σ^2 T )</div>
-            <p class="text-gray-300">Use the sample mean and sample variance of endpoints as immediate consistency checks: the simulated <code class="cyber-mono">mean(endpoint)</code> should be close to <code class="cyber-mono">μ T</code> and <code class="cyber-mono">var(endpoint)</code> close to <code class="cyber-mono">σ^2 T</code>, with Monte Carlo error O(1/√m).</p>
+            <h3 class="text-neon mt-4">Sample paths</h3>
+            <p class="text-gray-300">- Overall drift: a visible upward or downward trend across most paths indicates nonzero drift μ. If paths cluster around a rising line, drift dominates short-term noise.<br>
+            - Volatility: the vertical spread and roughness of paths reflect σ. Larger σ produces wider, more oscillatory trajectories. Compare path envelopes visually to judge relative volatility.<br>
+            - Path-to-path variability: different realizations show how much randomness affects individual trajectories; if m is small, expect large sampling variability.</p>
 
-            <h3 class="text-neon mt-4">2) Independent, stationary increments</h3>
-            <p class="text-gray-300">Increments over disjoint intervals are independent and their law depends only on the length of the interval. For a partition 0 = t_0 < t_1 < ... < t_n = T,
-            each increment ΔX_i = X(t_i) − X(t_{i-1}) is Gaussian with
-            <code class="cyber-mono">ΔX_i ~ Normal( μ Δt_i, σ^2 Δt_i )</code>. Numerically you can check this by standardizing increments
-            <code class="cyber-mono">(ΔX_i - μ Δt_i) / (σ √Δt_i)</code> and inspecting their empirical histogram or QQ-plot against N(0,1).</p>
+            <h3 class="text-neon mt-4">Endpoint histogram</h3>
+            <p class="text-gray-300">- Center and spread: the histogram center approximates the simulated mean at time T; its spread approximates the standard deviation ≈ σ√T. A bell-shaped histogram centered near the displayed theoretical mean indicates the simulation is behaving as expected.<br>
+            - Tails and outliers: heavy-looking tails or isolated bars far from the center may indicate sampling variability (small m), RNG tail differences (CLT vs Box–Muller), or insufficient binning. Use more paths or Box–Muller for tail-sensitive checks.</p>
 
-            <h3 class="text-neon mt-4">3) Martingale and Markov properties</h3>
-            <p class="text-gray-300">Define M(t) = X(t) − μ t. Then M(t) is a martingale (zero mean increments) and X(t) is Markov: the conditional distribution of the future given the past depends only on the current state. In practice this means that conditional forecasts from the current value are simple Gaussian shifts (useful in model checks and short-horizon predictions).</p>
+            <h3 class="text-neon mt-4">Practical checks shown on the page</h3>
+            <p class="text-gray-300">- The line labeled in the control panel reports simulated mean, variance and an average quadratic-variation estimate. Small relative errors (a few percent or less for moderate m) indicate good agreement; large errors suggest increasing m or reducing dt.<br>
+            - If the histogram looks skewed or the sample mean is far from μ·T, re-run with larger m or verify inputs (μ, σ, T) are correct.</p>
 
-            <h3 class="text-neon mt-4">4) Quadratic variation (diagnostic)</h3>
-            <p class="text-gray-300">Quadratic variation over [0,T] is the limit of partition sums Σ (ΔX_i)^2 as max Δt_i → 0. For arithmetic BM,
-            <div class="code-block cyber-mono">QV[0,T] = lim_{||Δ||→0} Σ_i (ΔX_i)^2 = σ^2 T.</div>
-            Numerically the Riemann sum Σ (ΔX_i)^2 computed on the simulation should be approximately σ^2 T (error decreases as n increases). This gives a robust check of discretization fidelity and the chosen σ.</p>
-
-            <h3 class="text-neon mt-4">5) Convergence and scaling remarks</h3>
-            <p class="text-gray-300">If you construct Brownian motion as a scaling limit of simple symmetric random walks, Donsker's invariance principle formalizes that the rescaled path distribution converges (in distribution in Skorokhod space) to Wiener measure. For our Gaussian-increment discrete construction the marginal increment law is already exact; discretization error manifests mostly in pathwise functionals (e.g., sup-norm, local time) and decreases as Δt→0. Typical pointwise errors scale like O(√Δt) for increments.</p>
-
-            <h3 class="text-neon mt-4">6) RNG method: Box–Muller vs CLT</h3>
-            <p class="text-gray-300">Box–Muller transforms two independent uniforms to two exact standard normals (given the underlying uniform RNG) and preserves tail accuracy; the CLT-sum-of-12-uniforms is only an approximation (faster but with inferior tail behavior). Use Box–Muller when endpoint tails, extreme quantiles, or quadratic-variation diagnostics are important. CLT is acceptable for quick, visually plausible demos.</p>
-
-            <h3 class="text-neon mt-4">7) Practical numerical checks (what to compute)</h3>
-            <ul class="ml-6 text-gray-300 mt-3">
-                <li>Compare simulated <code class="cyber-mono">mean(endpoint)</code> and <code class="cyber-mono">var(endpoint)</code> to theoretical <code class="cyber-mono">μ T</code> and <code class="cyber-mono">σ^2 T</code> (report relative error; Monte Carlo standard error ≈ √(Var/ m)).</li>
-                <li>Overlay the theoretical Normal(μ T, σ^2 T) pdf on the endpoint histogram (I can add a toggle for this overlay).</li>
-                <li>Standardize increments and produce a QQ-plot / histogram versus N(0,1) to check Gaussianity of increments.</li>
-                <li>Compute quadratic variation Σ (ΔX_i)^2 for a few sample paths and compare to σ^2 T; plot the distribution across simulated paths.</li>
-                <li>Compare results using <code class="cyber-mono">boxmuller</code> and <code class="cyber-mono">clt</code> RNG methods to inspect tail differences and runtime.</li>
-            </ul>
-
-            <p class="text-gray-300 mt-3">If you want, I can implement the overlay of the Normal pdf on the histogram, add a small table that reports quadratic-variation per path, and produce QQ-plots in-page. Tell me which diagnostics you prefer and I will add them.</p>
+            
         </section>
 
     </main>

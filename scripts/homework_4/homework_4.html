@@ -7,6 +7,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Load Chart.js for visualization in the LLN section -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <!-- MathJax to render LaTeX math correctly -->
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$','$'], ['\\(','\\)']] },
+            options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'code'] }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
     <style>
         /* Import e Stili di Base */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900;200&display=swap');
@@ -95,6 +103,9 @@
             color: var(--neon-color);
             box-shadow: 0 0 8px rgba(250, 250, 250, 0.5);
         }
+        /* Utility classes to use theme colors with Tailwind-like names used in markup */
+        .border-neon { border-color: var(--neon-color); }
+        .border-accent-color { border-color: var(--accent-color); }
     </style>
 </head>
 <body class="text-gray-200">
@@ -142,31 +153,31 @@
         </p>
 
         <ul class="list-none space-y-4 mb-8 text-gray-300">
-            <li class="bg-gray-800 p-3 rounded-md border-l-4 border-lime-400 shadow-lg">
-                <span class="font-bold text-lime-400">STEP 1: Modulus</span>
-                <span class="cyber-mono ml-4 text-gray-400">// Public Base</span><br>
-                <span class="formula cyber-mono">N = p &middot; q</span>
+            <li class="bg-gray-800 p-3 rounded-md border-l-4 border-neon shadow-lg">
+                <span class="font-bold text-neon">STEP 1: Modulus</span>
+                <span class="cyber-mono ml-4 text-gray-400">// Public base</span><br>
+                <div class="formula cyber-mono">$$N = p \cdot q$$</div>
             </li>
-            <li class="bg-gray-800 p-3 rounded-md border-l-4 border-yellow-400 shadow-lg">
-                <span class="font-bold text-yellow-400">STEP 2: Euler's Totient (φ(N))</span>
-                <span class="cyber-mono ml-4 text-gray-400">// Required for Private Key</span><br>
-                <span class="formula cyber-mono">φ(N) = (p - 1) &middot; (q - 1)</span>
+            <li class="bg-gray-800 p-3 rounded-md border-l-4 border-neon shadow-lg">
+                <span class="font-bold text-neon">STEP 2: Euler's Totient (\(\varphi(N)\))</span>
+                <span class="cyber-mono ml-4 text-gray-400">// Required for private key</span><br>
+                <div class="formula cyber-mono">$$\varphi(N) = (p - 1) \cdot (q - 1)$$</div>
             </li>
-            <li class="bg-gray-800 p-3 rounded-md border-l-4 border-cyan-400 shadow-lg">
-                <span class="font-bold text-cyan-400">STEP 3: Public Exponent (e)</span>
-                <span class="cyber-mono ml-4 text-gray-400">// Must be $1 < e < \phi(N)$ and $\text{gcd}(e, \phi(N))=1$</span>
+            <li class="bg-gray-800 p-3 rounded-md border-l-4 border-neon shadow-lg">
+                <span class="font-bold text-neon">STEP 3: Public Exponent (e)</span>
+                <div class="cyber-mono ml-4 text-gray-400">$$\text{choose } e \text{ such that } 1 < e < \varphi(N) \text{ and } \gcd(e,\varphi(N)) = 1.$$</div>
             </li>
-            <li class="bg-gray-800 p-3 rounded-md border-l-4 border-red-400 shadow-lg">
-                <span class="font-bold text-red-400">STEP 4: Private Exponent (d)</span>
-                <span class="cyber-mono ml-4 text-gray-400">// Multiplicative Inverse of $e \pmod{\phi(N)}$</span><br>
-                <span class="formula cyber-mono">d &middot; e \equiv 1 \pmod{\phi(N)}</span>
+            <li class="bg-gray-800 p-3 rounded-md border-l-4 border-neon shadow-lg">
+                <span class="font-bold text-neon">STEP 4: Private Exponent (d)</span>
+                <span class="cyber-mono ml-4 text-gray-400">// Multiplicative inverse of <code>d</code> modulo \(\varphi(N)\)</span><br>
+                <div class="formula cyber-mono">$$d \cdot e \equiv 1 \pmod{\varphi(N)}$$</div>
             </li>
         </ul>
         
         <div class="p-4 bg-gray-900/70 border-l-8 border-gray-500 mb-10">
             <p class="font-mono text-base text-gray-400">
-                **Public Key (Encrypt)**: \{e, N\}<br>
-                **Private Key (Decrypt)**: \{d, N\}
+                **Public Key (Encrypt)**: {e, N}<br>
+                **Private Key (Decrypt)**: {d, N}
             </p>
         </div>
 
@@ -211,7 +222,7 @@ Ogni volta che mi separo da Maurice, non è mai a cuor leggero. Il
 congresso dura appena una settimana, eppure, mentre andavamo da Mougins
             </script>
 
-            <div id="status" class="text-sm text-lime-400 cyber-mono mb-2">Processing...</div>
+            <div id="status" class="text-sm text-neon cyber-mono mb-2">Processing...</div>
             <div id="rsa-output" class="p-4 bg-gray-900/40 brutal-border text-sm cyber-mono"></div>
 
             <script>
@@ -396,7 +407,7 @@ congresso dura appena una settimana, eppure, mentre andavamo da Mougins
                             <div><strong>Public Key (e, n)</strong>: ${e}, ${n}</div>
                             <div><strong>Private Key (d, n)</strong>: ${d}, ${n}</div>
                             <div><strong>Ciphertext Blocks (first 10)</strong>: ${cipher.slice(0,10).join(', ')}...</div>
-                            ${factors ? `<div><strong>Factored Modulus</strong>: ${factors[0]} &times; ${factors[1]}</div>` : '<div><strong class="text-red-400">Factorization failed (N too large for demo function).</strong></div>'}
+                            ${factors ? `<div><strong>Factored Modulus</strong>: ${factors[0]} &times; ${factors[1]}</div>` : '<div><strong class="text-neon">Factorization failed (N too large for demo function).</strong></div>'}
                         </div>
                     `;
 
@@ -404,8 +415,8 @@ congresso dura appena una settimana, eppure, mentre andavamo da Mougins
                     const chartsWrap = document.createElement('div');
                     chartsWrap.className = 'grid grid-cols-1 md:grid-cols-2 gap-6 mt-4';
                     chartsWrap.innerHTML = `
-                        <div id="orig-chart" class="p-3 bg-gray-800/70 border-2 border-lime-400"></div>
-                        <div id="rsa-chart" class="p-3 bg-gray-800/70 border-2 border-red-400"></div>
+                        <div id="orig-chart" class="p-3 bg-gray-800/70 border-2 border-neon"></div>
+                        <div id="rsa-chart" class="p-3 bg-gray-800/70 border-2 border-neon"></div>
                     `;
                     out.appendChild(chartsWrap);
 
@@ -417,15 +428,15 @@ congresso dura appena una settimana, eppure, mentre andavamo da Mougins
                     const rsaCounts = {};
                     for(const c of cipher){ const letter = String.fromCharCode((c % 26) + 97); rsaCounts[letter] = (rsaCounts[letter]||0) + 1; }
                     
-                    renderCounts('orig-chart', origCounts, 'Original Plaintext Letter Frequencies', '#lime-400');
-                    renderCounts('rsa-chart', rsaCounts, 'Ciphertext Letter Frequencies (C mod 26)', '#red-400');
+                    renderCounts('orig-chart', origCounts, 'Original Plaintext Letter Frequencies', 'var(--neon-color)');
+                    renderCounts('rsa-chart', rsaCounts, 'Ciphertext Letter Frequencies (C mod 26)', 'var(--accent-color)');
 
                     // Final Results
                     if(factors){
                         out.innerHTML += `
                             <div class="mt-4 p-3 bg-gray-800/70 border-2 border-gray-500">
-                                <div><strong>Decrypted Plaintext (first 100 chars)</strong>: <code class="text-lime-400">${recovered.slice(0,100)}...</code></div>
-                                <div><strong>Statistical Validation ($\chi^2$ Score)</strong>: <code class="text-cyan-400">${chi.toFixed(4)}</code></div>
+                                <div><strong>Decrypted Plaintext (first 100 chars)</strong>: <code class="text-neon">${recovered.slice(0,100)}...</code></div>
+                                <div><strong>Statistical Validation (χ² Score)</strong>: <code class="text-neon">${chi.toFixed(4)}</code></div>
                             </div>
                         `;
                     }
@@ -476,11 +487,11 @@ congresso dura appena una settimana, eppure, mentre andavamo da Mougins
 
                     // Update textual results
                     document.getElementById('lln-results').innerHTML = `
-                        <div class="mt-4 p-3 bg-gray-800/70 border-2 border-lime-400">
-                            <div><strong>Final Trials (N)</strong>: <span class="text-lime-400">${N.toLocaleString()}</span></div>
-                            <div><strong>Expected Probability ($\mathbf{P}$)</strong>: <span class="text-cyan-400">${finalExpectedMean.toFixed(4)}</span></div>
-                            <div><strong>Observed Sample Mean</strong>: <span class="text-yellow-400">${finalSampleMean.toFixed(4)}</span></div>
-                            <div><strong>Difference</strong>: <code class="text-red-400">${Math.abs(finalSampleMean - finalExpectedMean).toExponential(2)}</code></div>
+                        <div class="mt-4 p-3 bg-gray-800/70 border-2 border-neon">
+                            <div><strong>Final Trials (N)</strong>: <span class="text-neon">${N.toLocaleString()}</span></div>
+                            <div><strong>Expected Probability (P)</strong>: <span class="text-neon">${finalExpectedMean.toFixed(4)}</span></div>
+                            <div><strong>Observed Sample Mean</strong>: <span class="text-neon">${finalSampleMean.toFixed(4)}</span></div>
+                            <div><strong>Difference</strong>: <code class="text-gray-300">${Math.abs(finalSampleMean - finalExpectedMean).toExponential(2)}</code></div>
                         </div>
                     `;
 
@@ -501,17 +512,17 @@ congresso dura appena una settimana, eppure, mentre andavamo da Mougins
                         data: {
                             labels: labels,
                             datasets: [{
-                                label: 'Sample Mean $\overline{X}$',
+                                label: 'Sample Mean (X̄)',
                                 data: runningAverages,
-                                borderColor: 'rgba(250, 250, 250, 0.8)', // White Neon
+                                borderColor: 'rgba(250, 250, 250, 0.9)',
                                 borderWidth: 1,
                                 pointRadius: 0,
                                 fill: false,
                                 tension: 0.1
                             }, {
-                                label: 'Expected Mean P',
+                                label: 'Expected Mean (P)',
                                 data: expectedLine,
-                                borderColor: 'rgba(0, 255, 194, 1.0)', // Accent Neon Green
+                                borderColor: 'rgba(250, 250, 250, 0.45)',
                                 borderWidth: 2,
                                 pointRadius: 0,
                                 fill: false,
@@ -590,7 +601,7 @@ congresso dura appena una settimana, eppure, mentre andavamo da Mougins
 
         <div class="code-block-brutal text-center">
             <span class="text-xl font-bold text-gray-400">Sample Mean $\rightarrow$ Expected Value</span><br>
-            <span class="formula cyber-mono text-xl md:text-2xl">\overline{X}_N \xrightarrow{N \to \infty} E[X] \equiv P</span>
+            <div class="formula cyber-mono text-xl md:text-2xl">$$\overline{X}_N \xrightarrow{N \to \infty} E[X] \equiv P$$</div>
         </div>
 
         <!-- SECTION 2.2: LLN Simulation -->
@@ -599,7 +610,7 @@ congresso dura appena una settimana, eppure, mentre andavamo da Mougins
                 [02.2] SIMULATION: BERNOULLI TRIALS
             </h3>
 
-            <div id="lln-status" class="text-sm text-lime-400 cyber-mono mb-4">Ready to run.</div>
+            <div id="lln-status" class="text-sm text-neon cyber-mono mb-4">Ready to run.</div>
 
             <!-- Input Controls -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
