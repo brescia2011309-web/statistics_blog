@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Law of Large Numbers — Meaning, Simulations, Applications</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900;200&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #0d0d0d; color: #e5e7eb; }
+        :root { --neon-color: #FAFAFA; --accent-color: #00FFC2; }
+        .brutal-border { border: 4px solid var(--neon-color); transition: all 0.15s ease-out; }
+        .brutal-border:hover { transform: translate(-3px, -3px); box-shadow: 3px 3px 0 var(--neon-color), 0 0 8px rgba(250,250,250,0.3); }
+        .cyber-mono { font-family: monospace; }
+        .text-neon { color: var(--neon-color); }
+        .section-header { border-left: 8px solid var(--neon-color); padding-left: 1rem; margin-bottom: 1.5rem; }
+        .code-block { background: #111827; padding: 1rem; border: 2px solid var(--neon-color); overflow-x: auto; }
+        .cyber-input { background-color: #1f2937; color: var(--neon-color); border: 2px solid var(--neon-color); padding: 0.5rem; }
+        .cyber-button { background-color: var(--neon-color); color: #0d0d0d; border: 2px solid var(--neon-color); padding: 0.5rem 1rem; font-weight:700; }
+    </style>
+</head>
+<body class="text-gray-200">
+    <header class="bg-black p-6 border-b-4 border-neon">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="../index.html" class="text-sm font-mono tracking-wider text-neon hover:text-gray-400 transition-colors">← /MAIN_INDEX</a>
+            <span class="text-sm font-mono tracking-wider text-gray-500">//LAW_OF_LARGE_NUMBERS</span>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 md:px-12 py-12">
+        <h1 class="text-4xl font-black uppercase mb-6 text-neon cyber-mono tracking-tight">Law of Large Numbers — Thesis</h1>
+
+        <section class="mb-6 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Historical context & intuition</h2>
+            <p class="text-gray-300">The LLN arose from early probabilists' attempts to justify why gambling odds, insurance premiums, and empirical averages appear stable. Jacob Bernoulli first proved a version in the 18th century for binomial trials; later mathematicians generalized the result into the modern axiomatic and measure-theoretic framework. The theorem bridges empirical observation and mathematical certainty: it explains why repeated sampling yields predictable aggregate behaviour.</p>
+
+            <p class="text-gray-300">Intuitively, the LLN is about two forces: randomness that produces fluctuations, and averaging that attenuates them. The larger the sample, the more cancellation occurs between positive and negative deviations, revealing the central tendency hidden behind noise.</p>
+        </section>
+
+        <section class="mb-6 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Formal statements (plain language + formulas)</h2>
+            <p class="text-gray-300">There are several variants; two main ones are the Weak Law and the Strong Law. I present them in clear, plain terms and then show compact formulas in readable blocks.</p>
+
+            <h3 class="text-neon mt-2">Weak Law of Large Numbers (informal)</h3>
+            <p class="text-gray-300">If X1, X2, ... are independent, identically distributed (iid) random variables with finite expected value μ = E[X1], then the sample mean X̄n converges to μ in probability: for any small tolerance ε, the chance that the sample mean deviates from μ by more than ε goes to zero as n grows.</p>
+            <div class="code-block cyber-mono">X̄_n = (1 / n) · Σ_{i=1}^n X_i
+P( |X̄_n − μ| &gt; ε ) → 0  as n → ∞  (for every ε &gt; 0)</div>
+
+            <h3 class="text-neon mt-2">Strong Law of Large Numbers (informal)</h3>
+            <p class="text-gray-300">Under slightly stronger conditions (for iid with E|X1| &lt; ∞ the Strong Law holds), the sample mean converges to μ almost surely: with probability 1, the sequence X̄n approaches μ as n → ∞. This means that for almost every infinite sequence of observations you will eventually see the running average stabilize.</p>
+            <div class="code-block cyber-mono">P( lim_{n→∞} X̄_n = μ ) = 1</div>
+
+            <p class="text-gray-300">Note on conditions: identical distribution is convenient but not strictly necessary; various forms of LLN exist for non-identical or weakly dependent variables, but assumptions on moments or dependence are required.</p>
+        </section>
+
+        <section class="mb-6 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Proof sketches & mechanisms</h2>
+            <p class="text-gray-300">A few ideas explain why the LLN is true in many standard settings. These are not full proofs but show the mechanisms so the result feels less magical.</p>
+
+            <h3 class="text-neon mt-2">Chebyshev's inequality & the weak law</h3>
+            <p class="text-gray-300">One simple route: if Var(X1) = σ² &lt; ∞, then Var(X̄_n) = σ² / n. Chebyshev's inequality gives a bound on tail probabilities:</p>
+            <div class="code-block cyber-mono">P(|X̄_n − μ| &gt; ε) ≤ Var(X̄_n) / ε² = σ² / (n ε²)</div>
+            <p class="text-gray-300">As n → ∞ the right-hand side goes to zero, proving convergence in probability. This is the classical, elementary proof of the Weak Law for iid variables with finite variance.</p>
+
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="utf-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <title>Thesis removed</title>
+                <script src="https://cdn.tailwindcss.com"></script>
+                <style>
+                    body { font-family: Inter, sans-serif; background-color: #0d0d0d; color: #e5e7eb; }
+                    .code { background:#111827;border:2px solid #FAFAFA;padding:1rem;border-radius:6px }
+                </style>
+            </head>
+            <body>
+                <main class="container mx-auto px-6 md:px-12 py-12">
+                    <div class="code">
+                        <h2 class="text-neon">Thesis folder removed</h2>
+                        <p class="text-gray-300">Per your request, the thesis page has been removed from the index. The original content is no longer served from this path. If you want the file permanently deleted from the repository, confirm and I will attempt removal again or remove it via git.</p>
+                    </div>
+                </main>
+            </body>
+            </html>
+
+        <section class="mb-6 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Simulations and empirical illustrations</h2>
+            <p class="text-gray-300">This thesis benefits from reproducible simulations. Below are concrete interactive demos to implement (I can add runnable JS versions of each directly into the site or provide Jupyter notebooks). Each demo should include parameter controls, visualizations, and short experiments that reproduce the theoretical claims.</p>
+
+            <h3 class="text-neon mt-2">1. LLN running-mean replicates</h3>
+            <p class="text-gray-300">Show a long single-run trace of the running sample mean and a separate panel with histograms of final sample means from many replicates. Provide distribution choices (Bernoulli, Uniform, Normal, Cauchy) and controls for n and m. Include overlays of the theoretical mean and, when appropriate, CLT-based normal approximations.</p>
+
+            <h3 class="text-neon mt-2">2. A/B testing simulator</h3>
+            <p class="text-gray-300">Simulate two groups with configurable means and variances. Implement variants: (a) plain randomized allocation, (b) blocked/stratified allocation, (c) paired designs, and (d) control-variates adjustment. Show sampling distributions of estimators, power curves, and how variance-reduction techniques reduce required sample size.</p>
+
+            <h3 class="text-neon mt-2">3. Poisson counting process & Bernoulli approximation</h3>
+            <p class="text-gray-300">Simulate counting processes by Bernoulli trials in small subintervals and compare the histogram of counts to the limiting Poisson(λT). Also display interarrival histograms and exponential fit. Provide convergence diagnostics as subinterval width shrinks (n grows) and show KL divergence or χ² between empirical and theoretical pmfs.</p>
+
+            <h3 class="text-neon mt-2">4. Robust estimators vs. outliers</h3>
+            <p class="text-gray-300">Generate datasets with controlled outlier rates and magnitudes. Compare mean, trimmed mean, winsorized mean, median, and M-estimators. Visualize bias and variance trade-offs and show when trimming/winsorizing improves RMSE vs. when it induces bias.</p>
+
+            <h3 class="text-neon mt-2">5. Behavioral baselining & anomaly scenarios</h3>
+            <p class="text-gray-300">Simulate time series with diurnal cycles and bursts; compute moving averages, EWMA, rolling quantiles, and robust baselines. Inject anomalies (single bursts, sustained drift, coordinated attacks) and measure detection delay vs false-positive rate for different window sizes and robust statistics.</p>
+
+            <h3 class="text-neon mt-2">6. DDoS traffic simulator</h3>
+            <p class="text-gray-300">Simulate benign traffic plus adversarial bursts. Implement detection rules based on rate-thresholds, EWMA, and entropy-of-source-IP heuristics. Evaluate trade-offs: detection speed, false positives, and mitigation cost (e.g., collateral blocking).</p>
+
+            <h3 class="text-neon mt-2">7. RNG and cryptographic randomness checks</h3>
+            <p class="text-gray-300">Provide diagnostics showing that simple averaging is meaningless for cryptographic randomness. Instead include randomness test suites (frequency tests, runs, entropy estimates) and visualizations of correlations and spectral signatures for weak PRNGs vs cryptographically secure RNGs.</p>
+
+            <h3 class="text-neon mt-2">Reproducibility and artifacts</h3>
+            <p class="text-gray-300">For each demo I can provide:</p>
+            <ul class="ml-6 text-gray-300 mt-3">
+                <li>Standalone HTML/JS files (compatible with the existing site style) with parameter controls and Chart.js visualizations.</li>
+                <li>Optional Jupyter notebooks (Python + numpy/matplotlib) for reproducible experiments and offline analysis.</li>
+                <li>Small unit tests or assertions (where applicable) that reproduce key numeric claims in the thesis.</li>
+            </ul>
+
+            <p class="text-gray-300">Tell me which of these demos you'd like implemented first. I can start by adding the LLN running-mean replicates demo in `scripts/thesis/` (a single HTML/JS page), wired to the existing Chart.js setup, and then iterate to add the A/B simulator and Poisson counting demo.</p>
+        </section>
+
+    </main>
+
+    <script>
+        // Small utilities
+        function randBernoulli(p){ return Math.random() < p ? 1 : 0; }
+        function randUniform(){ return Math.random(); }
+        // Cauchy via inverse CDF using tan(pi*(u-0.5))
+        function randCauchy(){ return Math.tan(Math.PI * (Math.random() - 0.5)); }
+
+        // histogram density helper (centers + densities)
+        function histogramDensity(data, bins){
+            const min = Math.min(...data);
+            const max = Math.max(...data);
+            const bw = (max - min) / bins || 1/bins;
+            const counts = new Array(bins).fill(0);
+            for(const x of data){
+                let idx = Math.floor((x - min) / (max - min + 1e-12) * bins);
+                if(idx < 0) idx = 0; if(idx >= bins) idx = bins - 1;
+                counts[idx]++;
+            }
+            const total = data.length || 1;
+            const centers = [];
+            const densities = [];
+            for(let i=0;i<bins;i++){
+                const left = min + i * bw;
+                centers.push(left + bw/2);
+                densities.push(counts[i] / (total * bw));
+            }
+            return {centers, densities, bw};
+        }
+
+        // Chart defaults for dark theme
+        (function(){
+            try{
+                const root = getComputedStyle(document.documentElement);
+                const NEON = (root.getPropertyValue('--neon-color') || '#FAFAFA').trim();
+                Chart.defaults.color = NEON;
+                Chart.defaults.font.family = "'Inter', sans-serif";
+                Chart.defaults.elements.line.borderColor = 'rgba(250,250,250,0.9)';
+                Chart.defaults.plugins.legend.labels.color = NEON;
+            }catch(e){ console.warn('Chart defaults failed', e); }
+        })();
+
+        let runningChart = null, finalHist = null;
+
+        document.getElementById('runBtn').addEventListener('click', ()=>{
+            const dist = document.getElementById('distSelect').value;
+            const p = parseFloat(document.getElementById('inpP').value);
+            const n = parseInt(document.getElementById('inpN').value, 10);
+            const m = parseInt(document.getElementById('inpM').value, 10);
+            if(isNaN(n) || n<1) return alert('n must be >=1');
+            if(isNaN(m) || m<1) return alert('m must be >=1');
+
+            // single long run for running mean
+            const running = [];
+            let sum = 0;
+            for(let i=1;i<=n;i++){
+                let x;
+                if(dist==='bernoulli') x = randBernoulli(p);
+                else if(dist==='uniform') x = randUniform();
+                else x = randCauchy();
+                sum += x;
+                running.push(sum / i);
+            }
+
+            // many replicates to sample final means
+            const finals = [];
+            for(let rep=0; rep<m; rep++){
+                let s=0;
+                for(let i=0;i<n;i++){
+                    let x;
+                    if(dist==='bernoulli') x = randBernoulli(p);
+                    else if(dist==='uniform') x = randUniform();
+                    else x = randCauchy();
+                    s += x;
+                }
+                finals.push(s / n);
+            }
+
+            // Running chart
+            const labels = Array.from({length: running.length}, (_,i)=>i+1);
+            if(runningChart) runningChart.destroy();
+            const ctxR = document.getElementById('runningChart').getContext('2d');
+            runningChart = new Chart(ctxR, {
+                type: 'line',
+                data: { labels, datasets: [{ label: 'Running sample mean', data: running, borderColor: 'rgba(0,255,194,0.9)', borderWidth: 2, fill:false, pointRadius:0 }] },
+                options: { scales:{ x:{ title:{display:true,text:'n'}, ticks:{color:'var(--neon-color)'}, grid:{color:'#111827'} }, y:{ ticks:{color:'var(--neon-color)'}, grid:{color:'#111827'} } }, plugins:{legend:{labels:{color:'var(--neon-color)'}}} }
+            });
+
+            // final histogram
+            const hist = histogramDensity(finals, 40);
+            if(finalHist) finalHist.destroy();
+            const ctxF = document.getElementById('finalHist').getContext('2d');
+            finalHist = new Chart(ctxF, {
+                type: 'bar',
+                data: { labels: hist.centers.map(c=>c.toFixed(3)), datasets: [{ label: 'Empirical density (final means)', data: hist.densities, backgroundColor:'rgba(0,120,255,0.6)' }] },
+                options: { scales:{ x:{ ticks:{color:'var(--neon-color)'}, grid:{color:'#111827'} }, y:{ ticks:{color:'var(--neon-color)'}, grid:{color:'#111827'} } }, plugins:{legend:{labels:{color:'var(--neon-color)'}}} }
+            });
+
+            // Summary info (theoretical mean and approximate variance of sample mean)
+            let theoreticalMean = null, theoreticalVar = null;
+            if(dist==='bernoulli'){ theoreticalMean = p; theoreticalVar = p*(1-p)/n; }
+            else if(dist==='uniform'){ theoreticalMean = 0.5; theoreticalVar = (1/12)/n; }
+            else { theoreticalMean = 'undefined (Cauchy has no mean)'; theoreticalVar = 'undefined'; }
+
+            document.getElementById('simSummary').innerHTML = `
+                <div class="p-3 bg-gray-800/60 border border-gray-700">
+                    <div><strong>Distribution</strong>: <span class="text-lime-400">${dist}</span></div>
+                    <div><strong>n</strong>: <span class="text-lime-400">${n}</span>, <strong>m</strong>: <span class="text-lime-400">${m}</span></div>
+                    <div><strong>Theoretical mean</strong>: <span class="text-lime-400">${theoreticalMean}</span></div>
+                    <div><strong>Approx Var(sample mean)</strong>: <span class="text-lime-400">${typeof theoreticalVar === 'number' ? theoreticalVar.toExponential(2) : theoreticalVar}</span></div>
+                    <div><strong>Empirical mean of finals</strong>: <span class="text-cyan-400">${(finals.reduce((a,b)=>a+b,0)/finals.length).toFixed(5)}</span></div>
+                    <div><strong>Empirical sd of finals</strong>: <span class="text-cyan-400">${(Math.sqrt(finals.reduce((a,b)=>a + Math.pow(b - (finals.reduce((x,y)=>x+y,0)/finals.length),2),0)/finals.length)).toFixed(5)}</span></div>
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>
