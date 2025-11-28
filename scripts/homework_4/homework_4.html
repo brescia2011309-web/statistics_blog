@@ -134,7 +134,7 @@
         <!-- INTRODUZIONE / ABSTRACT -->
         <section class="mb-12 p-6 bg-gray-900/50 brutal-border">
             <p class="text-lg leading-relaxed text-gray-300">
-                This document explores two fundamental concepts: the **RSA** algorithm, the cornerstone of public-key cryptography, and the **Law of Large Numbers (LLN)**, a key principle of statistical probability. The RSA section demonstrates the mathematics of public/private key generation, while the LLN section provides a runnable simulation to empirically confirm the long-term stability of probability theory.
+                This document explores two fundamental concepts: the <strong>RSA</strong> algorithm, the cornerstone of public-key cryptography, and the <strong>Law of Large Numbers (LLN)</strong>, a key principle of statistical probability. The RSA section demonstrates the mathematics of public/private key generation, while the LLN section provides a runnable simulation to empirically confirm the long-term stability of probability theory.
             </p>
         </section>
 
@@ -176,8 +176,8 @@
         
         <div class="p-4 bg-gray-900/70 border-l-8 border-gray-500 mb-10">
             <p class="font-mono text-base text-gray-400">
-                **Public Key (Encrypt)**: {e, N}<br>
-                **Private Key (Decrypt)**: {d, N}
+                <strong>Public Key (Encrypt)</strong>: <code>{e, N}</code><br>
+                <strong>Private Key (Decrypt)</strong>: <code>{d, N}</code>
             </p>
         </div>
 
@@ -495,6 +495,19 @@ congresso dura appena una settimana, eppure, mentre andavamo da Mougins
                         </div>
                     `;
 
+                    // Dynamic interpretation based on sampling variability
+                    const se = Math.sqrt(finalExpectedMean * (1 - finalExpectedMean) / N);
+                    const z = se > 0 ? (finalSampleMean - finalExpectedMean) / se : null;
+                    let seText = se.toExponential(2);
+                    let zText = z === null ? 'n/a' : z.toFixed(2);
+                    let interp = `<div class="mt-3 p-3 bg-gray-800/60 border-2 border-neon text-gray-300">` +
+                        `<div><strong>Visual interpretation</strong>: the running average should oscillate around <code>${finalExpectedMean.toFixed(4)}</code> and the width of fluctuations shrinks roughly like <code>1/√N</code>.</div>` +
+                        `<div class="mt-2">Approx. standard error (SE) = <code>${seText}</code>. Final difference = <code>${(finalSampleMean - finalExpectedMean).toExponential(2)}</code> (z = <code>${zText}</code>).</div>` +
+                        `<div class="mt-2">If |z| &lt; 2 the result is consistent with sampling variability; if |z| &gt; 2 consider increasing <code>N</code> or repeating the experiment.</div>` +
+                        `</div>`;
+                    const interpEl = document.getElementById('lln-interpretation');
+                    if(interpEl) interpEl.innerHTML = interp;
+
                     // Generate Chart data
                     const labels = Array.from({ length: N }, (_, i) => i + 1);
                     const expectedLine = new Array(N).fill(finalExpectedMean);
@@ -596,7 +609,8 @@ congresso dura appena una settimana, eppure, mentre andavamo da Mougins
         </h3>
 
         <p class="text-lg leading-relaxed mb-6">
-            The **Law of Large Numbers (LLN)** states that as the number of trials ($\mathbf{N}$) in an experiment increases, the average of the results obtained from the trials (the **sample mean** or **observed probability**) approaches the expected value (the **theoretical probability**). This is the statistical foundation that ensures, over the long run, random events behave predictably.
+            The <strong>Law of Large Numbers (LLN)</strong> states that as the number of independent trials increases, the sample average converges to the true expected value. Intuitively, random fluctuations cancel out over many observations so the average stabilizes around the theoretical probability.<br>
+            There are two common formulations: the <em>Weak Law</em> (convergence in probability) and the <em>Strong Law</em> (almost-sure convergence). For practical simulations, the important takeaway is that the typical size of fluctuations around the mean decreases roughly like the standard error, which for Bernoulli trials is <code>SE ≈ √(P(1−P)/N)</code> (so errors shrink like <code>1/√N</code> as N grows). The Central Limit Theorem additionally explains that the distribution of the suitably scaled sample mean approaches a Normal distribution for large N, which justifies using z-like diagnostics for consistency checks.
         </p>
 
         <div class="code-block-brutal text-center">
@@ -641,6 +655,16 @@ congresso dura appena una settimana, eppure, mentre andavamo da Mougins
             <!-- Chart Display -->
             <div class="code-block-brutal h-96">
                 <canvas id="lln-chart"></canvas>
+            </div>
+            <div id="lln-interpretation" class="mt-4 text-gray-300">
+                <!-- Dynamic interpretation will be populated after each run -->
+                <strong>Interpretation (visual):</strong>
+                <ul class="ml-4 mt-2">
+                    <li>- Center: the running average should oscillate around the expected probability <code>P</code>. If the long-run center is far from <code>P</code>, re-check inputs or increase N.</li>
+                    <li>- Width of fluctuations: larger early swings are expected; their magnitude decreases roughly like <code>1/√N</code>. Compare observed fluctuation size to the reported SE.</li>
+                    <li>- Convergence speed: a log x-axis makes early variability visible while showing the long-run settling; steady approach toward <code>P</code> indicates good Monte Carlo behaviour.</li>
+                    <li>- Sampling variability: small N produces noisy paths—repeat runs or increase N to reduce variance.</li>
+                </ul>
             </div>
             
         </section>
