@@ -77,6 +77,11 @@
 
             <div id="output" class="text-gray-200 bg-gray-800 p-4 rounded-md code-block"></div>
 
+            <div id="theory" class="text-gray-400 mt-4">
+                <h3 class="text-neon font-bold">Theory & expectations</h3>
+                <div id="theoryText">Run the incremental example to see theoretical checks here (batch mean/variance, unbiased sample variance and relative differences).</div>
+            </div>
+
             <script>
                 function incrementalStats(arr){
                     const out = [];
@@ -104,18 +109,30 @@
                     const o = document.getElementById('output');
                     o.innerHTML = '';
                     for(const s of seq){ o.innerHTML += `<div>n=${s.n}, x=${s.x}, mean=${s.mean.toFixed(6)}, M2=${s.M2.toFixed(6)}, sampleVar=${s.sampleVar.toFixed(6)}</div>`; }
-                    if(seq.length>0){ const last = seq[seq.length-1]; o.innerHTML += `<hr><div><strong>Final (n=${last.n}):</strong> mean=${last.mean.toFixed(6)}, sample variance=${last.sampleVar.toFixed(6)}, population variance=${last.popVar.toFixed(6)}</div>`; }
+                    if(seq.length>0){
+                        const last = seq[seq.length-1];
+                        o.innerHTML += `<hr><div><strong>Final (n=${last.n}):</strong> mean=${last.mean.toFixed(12)}, sample variance=${last.sampleVar.toFixed(12)}, population variance=${last.popVar.toFixed(12)}</div>`;
+                        // Compute batch (naive) mean/variance for comparison
+                        const n = seq.length;
+                        const batchMean = arr.reduce((a,b)=>a+b,0)/n;
+                        const batchVarPop = arr.reduce((a,b)=>a+(b-batchMean)*(b-batchMean),0)/n;
+                        const batchVarSample = n>1 ? arr.reduce((a,b)=>a+(b-batchMean)*(b-batchMean),0)/(n-1) : 0;
+                        // Relative differences
+                        const relMeanDiff = batchMean===0 ? (last.mean - batchMean) : ((last.mean - batchMean)/Math.abs(batchMean));
+                        const relSampleVarDiff = batchVarSample===0 ? (last.sampleVar - batchVarSample) : ((last.sampleVar - batchVarSample)/Math.abs(batchVarSample));
+                        const theoryDiv = document.getElementById('theoryText');
+                        theoryDiv.innerHTML = `Batch mean = ${batchMean.toFixed(12)}; Batch sample variance (unbiased) = ${batchVarSample.toFixed(12)}; Batch population variance = ${batchVarPop.toFixed(12)}.<br>` +
+                            `Incremental (Welford) final mean = ${last.mean.toFixed(12)}; incremental sample variance = ${last.sampleVar.toFixed(12)}; incremental pop variance = ${last.popVar.toFixed(12)}.<br>` +
+                            `Relative difference (mean) = ${ (relMeanDiff*100).toFixed(6) }% ; Relative difference (sample variance) = ${ (relSampleVarDiff*100).toFixed(6) }% .<br>` +
+                            `<strong>Interpretation:</strong> Values should match up to floating-point rounding. Welford's method is numerically stable (preferred when sums are large or data streams are long). The sample variance reported is the unbiased estimator using divisor n-1; population variance uses divisor n.`;
+                    }
                 });
             </script>
 
             <p class="text-gray-400 mt-4">You can paste your own sequence (commas, semicolons, or spaces). The snippet demonstrates exact incremental updates and is numerically stable (Welford's method).</p>
         </section>
 
-        <section class="mb-8 p-6 bg-gray-900/50 brutal-border">
-            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Notes & references</h2>
-            <p class="text-gray-300">Welford's algorithm is the commonly recommended online method for variance because it avoids loss of precision that occurs when subtracting two large numbers (sum-of-squares minus square-of-sum).</p>
-            <p class="text-gray-300">For more reading: see Chan, Golub & LeVeque (1979) "Algorithms for computing the sample variance" and the <em>Wikipedia</em> entry on Welford's method.</p>
-        </section>
+        
 
     </main>
 </body>
