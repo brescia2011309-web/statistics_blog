@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Brownian motion (continuous) — Homework 11</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900;200&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #0d0d0d; color: #e5e7eb; }
+        :root { --neon-color: #FAFAFA; --accent-color: #00FFC2; }
+        .brutal-border { border: 4px solid var(--neon-color); transition: all 0.15s ease-out; }
+        .brutal-border:hover { transform: translate(-3px, -3px); box-shadow: 3px 3px 0 var(--neon-color), 0 0 8px rgba(250,250,250,0.3); }
+        .cyber-mono { font-family: monospace; }
+        .text-neon { color: var(--neon-color); }
+        .section-header { border-left: 8px solid var(--neon-color); padding-left: 1rem; margin-bottom: 1.5rem; }
+        .code-block { background: #111827; padding: 1rem; border: 2px solid var(--neon-color); overflow-x: auto; }
+        .cyber-input { background-color: #1f2937; color: var(--neon-color); border: 2px solid var(--neon-color); padding: 0.5rem; }
+        .cyber-button { background-color: var(--neon-color); color: #0d0d0d; border: 2px solid var(--neon-color); padding: 0.5rem 1rem; font-weight:700; }
+        .code-block canvas { background-color: transparent; display: block; }
+    </style>
+</head>
+<body class="text-gray-200">
+    <header class="bg-black p-6 border-b-4 border-neon">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="../index.html" class="text-sm font-mono tracking-wider text-neon hover:text-gray-400 transition-colors">← /MAIN_INDEX</a>
+            <span class="text-sm font-mono tracking-wider text-gray-500">//BROWNIAN_MOTION</span>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 md:px-12 py-12">
+        <h1 class="text-4xl font-black uppercase mb-6 text-neon cyber-mono tracking-tight">Brownian motion — continuous-time, continuous-state</h1>
+
+        <section class="mb-6 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Theory & background</h2>
+            <p class="text-gray-300">Brownian motion (also called the Wiener process) is a continuous-time stochastic process with continuous sample paths and Gaussian increments. A standard Brownian motion B(t) satisfies B(0)=0, has independent increments, and for s<t the increment B(t)-B(s) ~ N(0, t-s). In applied settings we often simulate an arithmetic Brownian motion with drift μ and volatility σ, which has increments N(μ dt, σ^2 dt).</p>
+            <p class="text-gray-300">Brownian motion is the scaling limit of random walks: if we rescale time and space appropriately, discrete random walks converge to Brownian motion (Donsker's theorem). In modeling, Brownian motion drives diffusion models, option pricing (Black–Scholes), and serves as a mathematical model for many natural random phenomena.</p>
+            <p class="text-gray-300">This interactive demo simulates arithmetic Brownian motion by discretizing time into n steps over [0,T] and summing normal increments. You can choose the normal generator (Box–Muller or CLT) to observe small differences in sample quality and performance.</p>
+        </section>
+
+        <section class="mb-6 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Simulation controls</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
+                <div>
+                    <label class="text-xs text-gray-400">Total time T</label>
+                    <input id="inpT" type="number" step="0.1" min="0.01" value="1" class="cyber-input w-full" />
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400">Steps n</label>
+                    <input id="inpN" type="number" min="10" max="100000" value="500" class="cyber-input w-full" />
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400">Paths m</label>
+                    <input id="inpM" type="number" min="1" max="200" value="50" class="cyber-input w-full" />
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400">Drift μ</label>
+                    <input id="inpMu" type="number" step="0.01" value="0" class="cyber-input w-full" />
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400">Volatility σ</label>
+                    <input id="inpSigma" type="number" step="0.01" min="0" value="1" class="cyber-input w-full" />
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400">Normal method</label>
+                    <select id="method" class="cyber-input w-full">
+                        <option value="boxmuller">Box–Muller</option>
+                        <option value="clt">CLT (sum of uniforms)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400">Show sample paths</label>
+                    <select id="showPaths" class="cyber-input w-full">
+                        <option value="all">All paths</option>
+                        <option value="first">First path only</option>
+                        <option value="overlay">Overlay (thin)</option>
+                    </select>
+                </div>
+                <div class="flex items-end">
+                    <button id="runBtn" class="cyber-button w-full">Run simulation</button>
+                </div>
+            </div>
+            <div class="text-gray-400 text-sm">Default discretization uses increments N(μ dt, σ² dt). For large n the approximation is accurate; beware large m*n which may be slow in-browser.</div>
+        </section>
+
+        <section class="mb-6 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Visual results</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="code-block">
+                    <h3 class="text-neon">Sample paths</h3>
+                    <canvas id="pathsChart" height="260"></canvas>
+                </div>
+                <div class="code-block">
+                    <h3 class="text-neon">Endpoint distribution (histogram)</h3>
+                    <canvas id="endHist" height="260"></canvas>
+                </div>
+            </div>
+            <div class="mt-4 text-sm text-gray-300" id="simInfo"></div>
+        </section>
+
+        <section class="mb-6 p-6 bg-gray-900/50 brutal-border">
+            <h2 class="text-2xl font-bold text-neon section-header cyber-mono">Results & theoretical discussion</h2>
+            <p class="text-gray-300">Principal theoretical predictions and what the simulation should show:</p>
+            <ul class="ml-6 text-gray-300 mt-3">
+                <li><strong>Endpoint distribution</strong>: For arithmetic Brownian motion X(t)=μ t + σ B(t), the endpoint X(T) is Gaussian with mean μ T and variance σ² T. The histogram of endpoints should match a Normal(μ T, σ² T) density for sufficiently fine discretization and moderate m.</li>
+                <li><strong>Mean and variance</strong>: E[X(T)] = μ T and Var[X(T)] = σ² T. These give a simple check: compute simulated mean and variance of endpoints and compare to theory.</li>
+                <li><strong>Independent, stationary increments</strong>: Brownian increments over disjoint intervals are independent and their law depends only on interval length (stationary). This is reflected by increments ~ N(μ Δt, σ² Δt).</li>
+                <li><strong>Martingale and Markov properties</strong>: If we subtract the deterministic drift, M(t)=X(t)−μ t is (proportional to) a martingale; the process is also Markovian: the future depends only on the current state, not the past history.</li>
+                <li><strong>Quadratic variation</strong>: For Brownian motion the quadratic variation over [0,T] equals T (for σ=1); for arithmetic BM it's σ² T. Numerically, sum of squared increments ≈ σ² T as n→∞, which can be used as a convergence diagnostic.</li>
+                <li><strong>Convergence of discretization</strong>: The discrete-time construction converges to Brownian motion as n→∞ (Donsker's invariance principle when starting from random walk; for Gaussian increments the limit is already exact in distribution for each increment). In practice choose n large enough so √(Δt) σ is small relative to path scale.</li>
+                <li><strong>Box–Muller vs CLT generator</strong>: Box–Muller produces higher-fidelity Gaussian variates (for uniform RNG); the CLT (sum of uniforms) is faster but has poorer tail accuracy. For endpoint histograms and quadratic-variation checks, Box–Muller is preferred when accuracy matters.</li>
+                <li><strong>Numerical issues</strong>: Using very small dt increases CPU time and may accumulate floating-point error; using too small m with noisy endpoints yields poor empirical estimates — tune n and m to trade computation vs accuracy.</li>
+            </ul>
+
+            <p class="text-gray-300">Suggested numerical checks to run after simulation:</p>
+            <ul class="ml-6 text-gray-300 mt-3">
+                <li>Compare simulated mean(endpoint) and Var(endpoint) to μ T and σ² T (relative error).</li>
+                <li>Overlay theoretical Normal(μ T, σ² T) pdf on the endpoint histogram and visually inspect fit (I can add this overlay if you want).</li>
+                <li>Compute sum of squared increments for a path and compare to σ² T (quadratic variation approximation).</li>
+                <li>Repeat with Box–Muller vs CLT to compare tail behavior and runtime.</li>
+            </ul>
+        </section>
+
+    </main>
+
+    <script>
+        // Keep the same simulation code but adjust Chart defaults for dark theme
+        (function(){
+            try{
+                Chart.defaults.color = 'var(--neon-color)';
+                Chart.defaults.font.family = "'Inter', sans-serif";
+                Chart.defaults.elements.line.borderColor = 'rgba(250,250,250,0.9)';
+                Chart.defaults.plugins.legend.labels.color = 'var(--neon-color)';
+            }catch(e){console.warn(e)}
+        })();
+
+        // Box-Muller
+        function boxMuller(){ const u1=Math.random(); const u2=Math.random(); const r=Math.sqrt(-2*Math.log(u1)); const theta=2*Math.PI*u2; return r*Math.cos(theta); }
+        // CLT approx
+        function normalCLT(){ let s=0; for(let i=0;i<12;i++) s+=Math.random(); return s-6; }
+        function genStandardNormal(method){ return method==='boxmuller'?boxMuller():normalCLT(); }
+
+        function simulateBM(n,T,mu,sigma,m,method){
+            const dt = T/n; const sqrtDt = Math.sqrt(dt);
+            const times = new Array(n+1); for(let i=0;i<=n;i++) times[i]=(i*dt).toFixed(4);
+            const paths=[]; const endpoints=[];
+            for(let j=0;j<m;j++){
+                const x=new Array(n+1); x[0]=0;
+                for(let i=1;i<=n;i++){ const z=genStandardNormal(method); const inc = mu*dt + sigma*sqrtDt*z; x[i]=x[i-1]+inc; }
+                paths.push(x); endpoints.push(x[n]);
+            }
+            return {times,paths,endpoints};
+        }
+
+        function histogram(data,bins=30){ const min=Math.min(...data); const max=Math.max(...data); const width=(max-min)/bins||1; const counts=new Array(bins).fill(0); const centers=new Array(bins); for(let i=0;i<bins;i++) centers[i]=(min+(i+0.5)*width).toFixed(4); data.forEach(v=>{ const idx=Math.min(Math.floor((v-min)/width),bins-1); counts[idx]++; }); return {centers,counts}; }
+
+        const pathsCtx = document.getElementById('pathsChart').getContext('2d');
+        const endCtx = document.getElementById('endHist').getContext('2d');
+        let pathsChart=null, endChart=null;
+
+        function draw(pathsData, showOption){
+            const {times,paths,endpoints}=pathsData; const ds=[]; const m=paths.length;
+            for(let j=0;j<m;j++){ const label='path '+(j+1); const color=`hsl(${(j*360/m)%360} 90% 60%)`; const thin = showOption==='overlay'; if(showOption==='first' && j>0) break; ds.push({ label, data: paths[j].map((v,i)=>({x:parseFloat(times[i]), y:v})), borderColor: color, borderWidth: thin?0.8:1.8, pointRadius:0, tension:0.12 }); }
+            if(pathsChart) pathsChart.destroy(); pathsChart = new Chart(pathsCtx, { type:'line', data:{datasets:ds}, options:{ parsing:false, scales:{ x:{type:'linear', title:{display:true, text:'time'}}, y:{title:{display:true, text:'value'}} }, plugins:{ legend:{ display:false } } } });
+            const {centers,counts} = histogram(endpoints, Math.min(40, Math.max(10, Math.floor(Math.sqrt(endpoints.length)*2))));
+            if(endChart) endChart.destroy(); endChart = new Chart(endCtx, { type:'bar', data:{ labels:centers, datasets:[{ label:'endpoint counts', data:counts, backgroundColor:'rgba(250,250,250,0.08)' }] }, options:{ scales:{ x:{ title:{ display:true, text:'endpoint value' } }, y:{ title:{ display:true, text:'count' } } }, plugins:{ legend:{ display:false } } } });
+        }
+
+        document.getElementById('runBtn').addEventListener('click', ()=>{
+            const T = parseFloat(document.getElementById('inpT').value) || 1;
+            const n = parseInt(document.getElementById('inpN').value) || 500;
+            const m = parseInt(document.getElementById('inpM').value) || 50;
+            const mu = parseFloat(document.getElementById('inpMu').value) || 0;
+            const sigma = parseFloat(document.getElementById('inpSigma').value) || 1;
+            const method = document.getElementById('method').value;
+            const show = document.getElementById('showPaths').value;
+            // safety cap
+            const MAX = 20000000; if(m*n > MAX && !confirm('Large m*n may be slow. Continue?')) return;
+            const t0 = performance.now();
+            const data = simulateBM(n,T,mu,sigma,m,method);
+            const dt = T/n; const meanEndpoint = data.endpoints.reduce((a,b)=>a+b,0)/data.endpoints.length; const varEndpoint = data.endpoints.reduce((a,b)=>a+(b-meanEndpoint)**2,0)/data.endpoints.length; const elapsed = ((performance.now()-t0)/1000).toFixed(3);
+            document.getElementById('simInfo').innerText = `m=${m}, n=${n}, T=${T}, dt=${dt.toFixed(5)}, method=${method}, elapsed=${elapsed}s — mean(endpoint)=${meanEndpoint.toFixed(4)}, var(endpoint)=${varEndpoint.toFixed(4)}`;
+            draw(data, show);
+        });
+
+    </script>
+</body>
+</html>
